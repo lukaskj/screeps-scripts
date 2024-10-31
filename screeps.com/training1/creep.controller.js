@@ -1,11 +1,13 @@
-const ICreep = require("creep.class");
-const Harvester = require("role.harvester");
-const Builder = require("role.builder");
-const {ROLES} = require("constants");
+const ICreep = require("./creep.class");
+const Harvester = require("./role.harvester");
+const Builder = require("./role.builder");
+const Upgrader = require("./role.upgrader");
+const {ROLES} = require("./constants");
 
 const ByRole = {
   [ROLES.Harvester]: Harvester,
   [ROLES.Builder]: Builder,
+  [ROLES.Upgrader]: Upgrader,
 };
 
 class CreepController {
@@ -13,7 +15,7 @@ class CreepController {
 
   static from(creep) {
     if (!this.allCreeps.has(creep.name)) {
-      console.log(`CREATING NEW INSTANCE FOR ${creep.name}`, this.allCreeps.size);
+      // console.log(`CREATING NEW INSTANCE FOR ${creep.name}`, this.allCreeps.size);
       let clazz = ByRole[creep.memory.role];
       if (!clazz) clazz = ICreep;
 

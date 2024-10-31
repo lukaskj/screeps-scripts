@@ -7,6 +7,12 @@ const spawns = {
     options: {},
     priority: 1,
   },
+  [ROLES.Upgrader]: {
+    total: 1,
+    body: [WORK, CARRY, MOVE],
+    options: {},
+    priority: 1,
+  },
 };
 
 function run() {

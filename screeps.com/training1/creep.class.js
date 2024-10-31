@@ -25,10 +25,7 @@ class ICreep {
   }
 
   run() {
-    if (!this.canRun()) {
-      return;
-    }
-    console.log("RUNNING", this.creep.name);
+    console.log("No controller found for creep", this.creep.name);
   }
 }
 

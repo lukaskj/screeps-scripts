@@ -1,5 +1,7 @@
 const ICreep = require("./creep.class");
 
+const STRUCTURES_TO_TRANSFER = [STRUCTURE_EXTENSION, STRUCTURE_SPAWN];
+
 class Harvester extends ICreep {
   stroke = "#f542ef";
 
@@ -17,10 +19,7 @@ class Harvester extends ICreep {
     } else {
       const targets = creep.room.find(FIND_STRUCTURES, {
         filter: (structure) => {
-          return (
-            (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN) &&
-            structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-          );
+          return STRUCTURES_TO_TRANSFER.includes(structure.structureType) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
         },
       });
 
