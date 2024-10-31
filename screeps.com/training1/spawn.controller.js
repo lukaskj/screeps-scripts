@@ -1,23 +1,28 @@
-const {ROLES} = require("./constants");
+const Harvester = require("./role.harvester");
+const Upgrader = require("./role.upgrader");
 
-const spawns = {
-  [ROLES.Harvester]: {
+const spawns = [
+  {
+    role: Harvester.role,
     total: 2,
     body: [WORK, CARRY, MOVE],
     options: {},
     priority: 1,
   },
-  [ROLES.Upgrader]: {
+  {
+    role: Upgrader.role,
     total: 1,
     body: [WORK, CARRY, MOVE],
     options: {},
-    priority: 1,
+    priority: 2,
   },
-};
+];
+
+const prioritySpawns = _.sortBy(spawns, "priority");
 
 function run() {
-  for (const role in spawns) {
-    const spawnData = spawns[role];
+  for (const spawnData of prioritySpawns) {
+    const role = spawnData.role;
     const allRoleCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
 
     if (allRoleCreeps.length < spawnData.total) {

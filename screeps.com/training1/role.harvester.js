@@ -3,6 +3,8 @@ const ICreep = require("./creep.class");
 const STRUCTURES_TO_TRANSFER = [STRUCTURE_EXTENSION, STRUCTURE_SPAWN];
 
 class Harvester extends ICreep {
+  static role = "harvester";
+
   stroke = "#f542ef";
 
   run() {

@@ -1,6 +1,3 @@
-const ROLES = {
-  Harvester: "harvester",
-  Builder: "builder",
-};
+const ROLES = {};
 
 module.exports.ROLES = ROLES;

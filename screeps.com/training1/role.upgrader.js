@@ -1,6 +1,8 @@
 const ICreep = require("./creep.class");
 
 class Upgrader extends ICreep {
+  static role = "upgrader";
+
   stroke = "#1300e3";
 
   run() {

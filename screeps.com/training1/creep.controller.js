@@ -2,12 +2,11 @@ const ICreep = require("./creep.class");
 const Harvester = require("./role.harvester");
 const Builder = require("./role.builder");
 const Upgrader = require("./role.upgrader");
-const {ROLES} = require("./constants");
 
 const ByRole = {
-  [ROLES.Harvester]: Harvester,
-  [ROLES.Builder]: Builder,
-  [ROLES.Upgrader]: Upgrader,
+  [Harvester.role]: Harvester,
+  [Builder.role]: Builder,
+  [Upgrader.role]: Upgrader,
 };
 
 class CreepController {
