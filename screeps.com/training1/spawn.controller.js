@@ -11,7 +11,7 @@ const spawns = [
   },
   {
     role: Upgrader.role,
-    total: 1,
+    total: 4,
     body: [WORK, CARRY, MOVE],
     options: {},
     priority: 2,
