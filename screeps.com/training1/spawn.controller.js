@@ -1,3 +1,4 @@
+const Builder = require("./role.builder");
 const Harvester = require("./role.harvester");
 const Upgrader = require("./role.upgrader");
 
@@ -7,7 +8,7 @@ const spawns = [
     total: 2,
     body: [WORK, CARRY, MOVE],
     options: {},
-    priority: 1,
+    priority: 0,
   },
   {
     role: Upgrader.role,
@@ -15,6 +16,13 @@ const spawns = [
     body: [WORK, CARRY, MOVE],
     options: {},
     priority: 2,
+  },
+  {
+    role: Builder.role,
+    total: 1,
+    body: [WORK, CARRY, MOVE],
+    options: {},
+    priority: 1,
   },
 ];
 

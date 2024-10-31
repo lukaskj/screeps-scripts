@@ -26,8 +26,8 @@ class Upgrader extends ICreep {
       }
     } else {
       const sources = creep.room.find(FIND_SOURCES_ACTIVE);
-      if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-        this.moveTo(sources[0]);
+      if (creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
+        this.moveTo(sources[1]);
       }
     }
   }
