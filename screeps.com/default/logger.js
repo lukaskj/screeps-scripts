@@ -23,15 +23,16 @@ class Logger {
 
       args.pop();
     }
-    // const date = new Date().toISOString().substring(0, 16).replace("T", " ");
+
     const date = Utils.formatDate(new Date());
-    const text = `[${date}] ${args.map(String).join(" ")}`;
+    const text = `[${date}] ${args.map((arg) => (typeof arg === "object" ? JSON.stringify(arg) : String(arg))).join(" ")}`;
     console.log(text);
     Logger.instance().addTextToWindow(text, options);
+    Memory.ui.console.tick = 0;
   }
 
   static info(...args) {
-    this.log(args);
+    this.log(...args);
   }
 
   static error(...args) {
@@ -43,17 +44,19 @@ class Logger {
   }
 
   addTextToWindow(text, options) {
-    if (!Memory.ui || !Memory.ui.logs || !Memory.ui.logs.lines) {
+    if (!Memory.ui || !Memory.ui.console || !Memory.ui.console.lines) {
       return;
     }
 
-    if (Memory.ui.logs.lines.length > Memory.ui.logs.maxLines - 1) {
-      Memory.ui.logs.lines.splice(0, 1);
+    const consoleData = Memory.ui.console;
+
+    if (consoleData.lines.length > consoleData.maxLines - 1) {
+      consoleData.lines.splice(0, 1);
     }
 
     const dataToLog = !!options ? {text, ...options} : text;
 
-    Memory.ui.logs.lines.push(dataToLog);
+    consoleData.lines.push(dataToLog);
   }
 }
 
