@@ -12,7 +12,7 @@ const spawns = [
   },
   {
     role: Upgrader.role,
-    total: 4,
+    total: 2,
     body: [WORK, CARRY, MOVE],
     options: {},
     priority: 2,
@@ -28,7 +28,7 @@ const spawns = [
 
 const prioritySpawns = _.sortBy(spawns, "priority");
 
-function run() {
+function update() {
   for (const spawnData of prioritySpawns) {
     const role = spawnData.role;
     const allRoleCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
@@ -44,6 +44,7 @@ function run() {
       const result = spawner.spawnCreep(spawnData.body, newName, {...spawnData.options, memory: {role}});
       if (result === OK) {
         console.log(`Spawning new ${role} at ${spawner.name}:`, newName);
+        break;
       }
     }
   }
@@ -58,5 +59,5 @@ function getAvailableSpawner() {
 }
 
 module.exports = {
-  run,
+  update,
 };

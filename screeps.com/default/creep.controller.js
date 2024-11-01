@@ -13,7 +13,6 @@ const allCreeps = new Map();
 
 function from(creep) {
   if (!allCreeps.has(creep.name)) {
-    Game.notify("Instance created");
     // console.log(`CREATING NEW INSTANCE FOR ${creep.name}`, allCreeps.size);
     let clazz = ByRole[creep.memory.role];
     if (!clazz) clazz = ICreep;

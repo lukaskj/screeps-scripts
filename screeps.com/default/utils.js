@@ -1,17 +1,16 @@
-const CreepController = require("creep.controller");
+const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
+  dateStyle: "short",
+  timeStyle: "short",
+});
 
-function cleanMemory() {
-  for (const [name, icreep] of CreepController.allCreeps.entries()) {
-    console.log(name, CreepController.allCreeps.size);
+class Utils {
+  static allRooms() {
+    return Object.values(Game.rooms);
   }
-  // for (const name in Memory.creeps) {
-  //   if (!Game.creeps[name]) {
-  //     delete Memory.creeps[name];
-  //     console.log("Clearing non-existing creep memory:", name);
-  //   }
-  // }
+
+  static formatDate(date) {
+    return dateFormatter.format(date);
+  }
 }
 
-module.exports = {
-  cleanMemory,
-};
+module.exports = Utils;

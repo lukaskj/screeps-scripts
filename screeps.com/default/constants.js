@@ -1,3 +1,6 @@
-const ROLES = {};
+const COLORS = {
+  ERROR: "#F44336",
+  WARN: "#CDDC39",
+};
 
-module.exports.ROLES = ROLES;
+module.exports.COLORS = COLORS;
