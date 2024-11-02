@@ -1,3 +1,5 @@
+import {ICreep} from "./creep.class";
+import {CreepController} from "./creep.controller";
 import {BaseState} from "./statemachine";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
@@ -45,5 +47,20 @@ export class Utils {
     }
 
     return <T>Memory.states[refName][stateName];
+  }
+
+  static getCreepSpecializationReport(room: Room): Record<TCreepSpecializations, number> {
+    const myCreeps = room.find(FIND_MY_CREEPS);
+
+    return myCreeps.reduce((report, creep) => {
+      const creepMemory = <TCreepMemory>creep.memory;
+      report[creepMemory.specialization] = (report[creepMemory.specialization] ?? 0) + 1;
+
+      return report;
+    }, {} as Record<TCreepSpecializations, number>);
+  }
+
+  static getMyConstructionSites(room: Room) {
+    return room.find(FIND_MY_CONSTRUCTION_SITES);
   }
 }

@@ -1,8 +1,12 @@
-import {CreepStateIdle, CreepStateMachine, CreepStateThinking} from "./state.creep";
+import {CreepStateMachine} from "./state.creep";
 
 export class ICreep {
-  get creep() {
+  get creep(): Creep {
     return Game.creeps[this.name];
+  }
+
+  get id() {
+    return this.creep.id;
   }
 
   private stateMachine: CreepStateMachine;
@@ -25,6 +29,10 @@ export class ICreep {
 
   public moveToTarget(target: RoomPosition | {pos: RoomPosition}, opts?: MoveToOpts) {
     return this.creep.moveTo(target, {...opts, visualizePathStyle: {stroke: this.stroke}});
+  }
+
+  public getMemory<T>(): TCreepMemory & T {
+    return <TCreepMemory & T>Memory.creeps[this.name || this.id];
   }
 
   public run() {

@@ -1,13 +1,18 @@
 import {ICreep} from "./creep.class";
+import {CreepStateHarvester} from "./creep.state.harvester";
+import {CreepStateIdle} from "./creep.state.idle";
+import {CreepStateThinking} from "./creep.state.thinking";
 import {BaseState, StateMachine} from "./statemachine";
 
-export class CreepStateMachine extends StateMachine<ICreep, CreepBaseState> {
+export class CreepStateMachine extends StateMachine<ICreep, CreepState> {
   constructor(ref: ICreep) {
-    super([CreepStateIdle, CreepStateThinking], ref);
+    super([CreepStateIdle, CreepStateThinking, CreepStateHarvester], ref);
   }
 
   public override update(): void {
     super.update();
+
+    // Logger.info(Utils.getCreepSpecializationReport(this.ref.creep.room));
 
     if (this.currentState && !!this.currentState.status) {
       const pos = this.ref.creep.pos;
@@ -16,14 +21,22 @@ export class CreepStateMachine extends StateMachine<ICreep, CreepBaseState> {
   }
 }
 
-export abstract class CreepBaseState extends BaseState<ICreep> {
+export abstract class CreepState extends BaseState<ICreep> {
+  get creep(): Creep {
+    return this.ref.creep;
+  }
+
+  get icreep(): ICreep {
+    return this.ref;
+  }
+
   constructor(ref: ICreep, public status: string = "") {
     super(ref);
 
     const memory = this.getMemory();
 
     if (!memory) {
-      Object.assign(memory, {role: "worker", specialization: "idle"} satisfies TCreepMemory);
+      Object.assign(memory, {role: "worker", specialization: "idle", step: {}} satisfies TCreepMemory);
     }
 
     if (!memory.role) {
@@ -35,41 +48,14 @@ export abstract class CreepBaseState extends BaseState<ICreep> {
     }
   }
 
-  protected getMemory(): TCreepMemory {
-    return <TCreepMemory>Memory.creeps[this.getNameOrId()];
-  }
-}
-
-export class CreepStateIdle extends CreepBaseState {
-  constructor(ref: ICreep) {
-    super(ref, "💤");
-  }
-
-  override update(): ClassConstructor<BaseState> | undefined {
+  public override onEnter(prevState: CreepState): void {
     const memory = this.getMemory();
+    memory.specialization = "harvester";
+  }
 
-    memory.tick = (memory.tick ?? 0) + 1;
-
-    if (memory.tick % 5 === 0) {
-      return CreepStateThinking;
-    }
-    return;
+  protected getMemory<T>(): TCreepMemory & T {
+    return this.icreep.getMemory<T>();
   }
 }
 
-export class CreepStateThinking extends CreepBaseState {
-  constructor(ref: ICreep) {
-    super(ref, "💭");
-  }
-
-  override update(): ClassConstructor<BaseState> | undefined {
-    const memory = this.getMemory();
-
-    memory.tick = (memory.tick ?? 0) + 1;
-
-    if (memory.tick % 3 === 0) {
-      return CreepStateIdle;
-    }
-    return;
-  }
-}
+const STRUCTURES_TO_TRANSFER = [STRUCTURE_EXTENSION, STRUCTURE_SPAWN];

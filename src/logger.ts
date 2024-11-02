@@ -27,7 +27,7 @@ export class Logger {
 
     const date = Utils.formatDate(new Date());
     const text = `[${date}] ${args.map((arg) => (typeof arg === "object" ? JSON.stringify(arg) : String(arg))).join(" ")}`;
-    // console.log(text);
+    console.log("LOGGER", text);
     Logger.instance().addTextToWindow(text, options);
     Memory.ui.console.tick = 0;
   }

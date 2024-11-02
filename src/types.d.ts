@@ -27,6 +27,7 @@ type TCreepSpecializations = "idle" | "harvester" | "builder" | "upgrader";
 interface TCreepMemory {
   role: TCreepRoles;
   specialization: TCreepSpecializations;
+  step: Record<string, boolean>;
   [key: string]: any;
 }
 
