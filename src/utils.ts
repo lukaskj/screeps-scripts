@@ -19,4 +19,11 @@ export class Utils {
       }
     }
   }
+
+  static getStateFor(name: string) {
+    if (!Memory.states) {
+      Memory.states = {};
+    }
+    return Memory.states[name];
+  }
 }

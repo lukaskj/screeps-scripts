@@ -6,9 +6,9 @@ import {Upgrader} from "./role.upgrader";
 const allCreeps = new Map<string, ICreep>();
 
 const ByRole = {
-  [Harvester.role]: Harvester,
-  [Builder.role]: Builder,
-  [Upgrader.role]: Upgrader,
+  // [Harvester.role]: Harvester,
+  // [Builder.role]: Builder,
+  // [Upgrader.role]: Upgrader,
 };
 
 export class CreepController {
@@ -34,6 +34,13 @@ export class CreepController {
           console.log("Clearing ICreep instance:", name);
           allCreeps.delete(name);
         }
+      }
+    }
+
+    for (const name in Memory.states) {
+      if (!Game.creeps[name]) {
+        console.log("Clearing non-existing state memory:", name);
+        delete Memory.states[name];
       }
     }
   }

@@ -16,6 +16,10 @@ interface CreepMemory {
   [name: string]: any;
 }
 
+interface IStateMachineMemory {
+  currentState: string;
+}
+
 interface Memory {
   creeps: {[name: string]: CreepMemory};
   powerCreeps: {[name: string]: PowerCreepMemory};
@@ -23,6 +27,7 @@ interface Memory {
   rooms: {[name: string]: RoomMemory};
   spawns: {[name: string]: SpawnMemory};
   ui: TUiMemory;
+  states: {[name: string]: IStateMachineMemory};
 }
 
 type TSpawnItem = {
@@ -35,4 +40,4 @@ type TSpawnItem = {
 
 type TSpawnController = TSpawnItem[];
 
-type ClassConstructor<T> = { new (...args: any[]): T };
+type ClassConstructor<T> = {new (...args: any[]): T};
