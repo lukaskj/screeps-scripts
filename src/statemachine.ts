@@ -16,7 +16,7 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
     }
 
     let shouldCallOnEnter = false;
-    let stateMemory = Utils.getStateMemoryFor((<any>ref).name ?? (<any>ref).id);
+    let stateMemory = Utils.getStateMachineMemoryFor((<any>ref).name ?? (<any>ref).id);
     if (!stateMemory) {
       shouldCallOnEnter = true;
       stateMemory = this.initState((<any>ref).name, stateClassList[0]?.name ?? initialState?.name);
@@ -32,12 +32,12 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
   }
 
   private initState(name: string, currentStateName: string) {
-    const currentState = Utils.getStateMemoryFor(name);
+    const currentState = Utils.getStateMachineMemoryFor(name);
     if (!currentState) {
       Memory.states[name] = {currentState: currentStateName};
     }
 
-    return Utils.getStateMemoryFor(name);
+    return Utils.getStateMachineMemoryFor(name);
   }
 
   protected getState(stateKey: string) {
@@ -47,7 +47,7 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
   public update(): void {
     const nextState = this.currentState.update();
     if (nextState) {
-      const stateMemory = Utils.getStateMemoryFor((<any>this.ref).name);
+      const stateMemory = Utils.getStateMachineMemoryFor((<any>this.ref).name);
       if (this.states.has(nextState.name)) {
         const prevState = this.currentState;
         this.currentState = <T>this.states.get(nextState.name);
@@ -80,7 +80,7 @@ export abstract class BaseState<T = TStateReference> {
   public getStateMemory() {
     const name = this.getNameOrId();
 
-    return Utils.getStateMemoryFor(name);
+    return Utils.getStateMachineMemoryFor(name);
   }
 
   abstract update(): ClassConstructor<BaseState> | undefined;

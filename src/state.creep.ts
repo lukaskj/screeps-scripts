@@ -37,11 +37,35 @@ export abstract class CreepBaseState extends BaseState<Creep> {
 
 export class CreepStateIdle extends CreepBaseState {
   constructor(ref: Creep) {
-    super(ref, "💭");
-    // super(ref, "❓");
+    super(ref, "💤");
   }
 
   override update(): ClassConstructor<BaseState> | undefined {
+    const memory = this.getMemory();
+
+    memory.tick = (memory.tick ?? 0) + 1;
+
+    if (memory.tick % 5 === 0) {
+      console.log("ADASDASD", memory.tick);
+      return CreepStateThinking;
+    }
+    return;
+  }
+}
+
+export class CreepStateThinking extends CreepBaseState {
+  constructor(ref: Creep) {
+    super(ref, "💭");
+  }
+
+  override update(): ClassConstructor<BaseState> | undefined {
+    const memory = this.getMemory();
+
+    memory.tick = (memory.tick ?? 0) + 1;
+
+    if (memory.tick % 2 === 0) {
+      return CreepStateIdle;
+    }
     return;
   }
 }
