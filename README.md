@@ -12,7 +12,7 @@ pnpm dev
 Then, create a link to the built files to screeps folder
 
 ```powershell
-# Example
+# Powershell Example
 New-Item -ItemType SymbolicLink -Path C:\Users\[User]\AppData\Local\Screeps\scripts\screeps.com\default -Value [cloned repository folder]\dist
 ```
 
