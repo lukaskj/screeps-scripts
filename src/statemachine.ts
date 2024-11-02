@@ -11,24 +11,29 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
       this.states.set(stateClass.name, new stateClass(ref));
     }
 
-    if (!(<any>ref).name) {
-      Logger.warn(`No 'name' for ref '${ref}'`);
+    if (!(<any>ref).name && !(<any>ref).id) {
+      Logger.warn(`No 'name' nor 'id' for ref '${ref}'`);
     }
 
-    const stateMemory = this.initState((<any>ref).name, stateClassList[0]?.name ?? initialState?.name);
+    let shouldCallOnEnter = true;
+    let stateMemory = Utils.getStateMemoryFor((<any>ref).name ?? (<any>ref).id);
+    if (!stateMemory) {
+      shouldCallOnEnter = true;
+      stateMemory = this.initState((<any>ref).name, stateClassList[0]?.name ?? initialState?.name);
+    }
 
-    let initialStateName = stateMemory.currentState;
+    let currentStateName = stateMemory.currentState;
 
-    this.currentState = <T>this.states.get(initialStateName);
+    this.currentState = <T>this.states.get(currentStateName);
   }
 
   private initState(name: string, currentStateName: string) {
-    const currentState = Utils.getStateFor(name);
+    const currentState = Utils.getStateMemoryFor(name);
     if (!currentState) {
       Memory.states[name] = {currentState: currentStateName};
     }
 
-    return Utils.getStateFor(name);
+    return Utils.getStateMemoryFor(name);
   }
 
   protected getState(stateKey: string) {
@@ -38,7 +43,7 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
   public update(): void {
     const nextState = this.currentState.update();
     if (nextState) {
-      const stateMemory = Utils.getStateFor((<any>this.ref).name);
+      const stateMemory = Utils.getStateMemoryFor((<any>this.ref).name);
       if (this.states.has(nextState.name)) {
         const prevState = this.currentState;
         this.currentState = <T>this.states.get(nextState.name);
@@ -53,14 +58,21 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
   }
 }
 
-export abstract class BaseState<T = unknown> {
+export abstract class BaseState<T = TStateReference> {
   constructor(public ref: T) {}
 
   public onEnter(prevState: BaseState<T>) {
     console.log(`Entered state: ${this.constructor.name}. Next state: ${prevState.constructor.name}`);
   }
+
   public onExit(nextState: BaseState<T>) {
     console.log(`Exited state: ${this.constructor.name}. Next state: ${nextState.constructor.name}`);
+  }
+
+  public getMemory() {
+    const name = (<any>this.ref).name ? (<any>this.ref).name : (<any>this.ref).id ? (<any>this.ref).id : "";
+
+    return Utils.getStateMemoryFor(name);
   }
 
   abstract update(): ClassConstructor<BaseState> | undefined;

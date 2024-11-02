@@ -38,6 +38,9 @@ type TSpawnItem = {
   priority: number;
 };
 
-type TSpawnController = TSpawnItem[];
+type TStateNamedReference = {name: string; [key: string]: any};
+type TStateIdReference = {id: string; [key: string]: any};
+type TStateReference = TStateNamedReference | TStateIdReference;
 
+type TSpawnController = TSpawnItem[];
 type ClassConstructor<T> = {new (...args: any[]): T};

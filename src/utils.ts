@@ -20,7 +20,7 @@ export class Utils {
     }
   }
 
-  static getStateFor(name: string) {
+  static getStateMemoryFor(name: string) {
     if (!Memory.states) {
       Memory.states = {};
     }
