@@ -1,4 +1,4 @@
-import {CreepStateIdle, CreepStateMachine} from "./state.creep";
+import {CreepStateIdle, CreepStateMachine, CreepStateThinking} from "./state.creep";
 
 export class ICreep {
   get creep() {
@@ -8,7 +8,7 @@ export class ICreep {
   private stateMachine: CreepStateMachine;
 
   constructor(public name: string, public stroke = "#ffffff") {
-    this.stateMachine = new CreepStateMachine([CreepStateIdle], this.creep);
+    this.stateMachine = new CreepStateMachine([CreepStateIdle, CreepStateThinking], this.creep);
   }
 
   public canRun() {

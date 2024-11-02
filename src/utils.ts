@@ -1,3 +1,5 @@
+import {BaseState} from "./statemachine";
+
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   dateStyle: "short",
   timeStyle: "short",
@@ -20,11 +22,28 @@ export class Utils {
     }
   }
 
-  static getStateMemoryFor<T extends IStateMachineMemory>(name: string): T {
+  static getStateMachineMemoryFor<T extends IStateMachineMemory>(refName: string): T {
     if (!Memory.states) {
       Memory.states = {};
     }
 
-    return <T>Memory.states[name];
+    return <T>Memory.states[refName];
+  }
+
+  static getStateMemoryFor<T extends any>(refName: string, state: ClassConstructor<BaseState> | string): T {
+    if (!Memory.states) {
+      Memory.states = {};
+    }
+
+    if (!Memory.states[refName]) {
+      Memory.states[refName] = {currentState: ""};
+    }
+
+    let stateName = typeof state !== "string" ? state.name : state;
+    if (!Memory.states[refName][stateName]) {
+      Memory.states[refName][stateName] = {};
+    }
+
+    return <T>Memory.states[refName][stateName];
   }
 }
