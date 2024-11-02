@@ -1,7 +1,8 @@
+import {ICreep} from "./creep.class";
 import {BaseState, StateMachine} from "./statemachine";
 
-export class CreepStateMachine extends StateMachine<Creep, CreepBaseState> {
-  constructor(ref: Creep) {
+export class CreepStateMachine extends StateMachine<ICreep, CreepBaseState> {
+  constructor(ref: ICreep) {
     super([CreepStateIdle, CreepStateThinking], ref);
   }
 
@@ -9,14 +10,14 @@ export class CreepStateMachine extends StateMachine<Creep, CreepBaseState> {
     super.update();
 
     if (this.currentState && !!this.currentState.status) {
-      const pos = this.ref.pos;
-      this.ref.room.visual.text(this.currentState.status, pos.x + 0.5, pos.y - 0.5, {font: "16px", opacity: 0.7});
+      const pos = this.ref.creep.pos;
+      this.ref.creep.room.visual.text(this.currentState.status, pos.x + 0.5, pos.y - 0.5, {font: "16px", opacity: 0.7});
     }
   }
 }
 
-export abstract class CreepBaseState extends BaseState<Creep> {
-  constructor(ref: Creep, public status: string = "") {
+export abstract class CreepBaseState extends BaseState<ICreep> {
+  constructor(ref: ICreep, public status: string = "") {
     super(ref);
 
     const memory = this.getMemory();
@@ -40,7 +41,7 @@ export abstract class CreepBaseState extends BaseState<Creep> {
 }
 
 export class CreepStateIdle extends CreepBaseState {
-  constructor(ref: Creep) {
+  constructor(ref: ICreep) {
     super(ref, "💤");
   }
 
@@ -57,7 +58,7 @@ export class CreepStateIdle extends CreepBaseState {
 }
 
 export class CreepStateThinking extends CreepBaseState {
-  constructor(ref: Creep) {
+  constructor(ref: ICreep) {
     super(ref, "💭");
   }
 
@@ -66,7 +67,7 @@ export class CreepStateThinking extends CreepBaseState {
 
     memory.tick = (memory.tick ?? 0) + 1;
 
-    if (memory.tick % 2 === 0) {
+    if (memory.tick % 3 === 0) {
       return CreepStateIdle;
     }
     return;

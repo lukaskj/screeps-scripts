@@ -46,7 +46,7 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
 
   public update(): void {
     const nextState = this.currentState.update();
-    if (nextState) {
+    if (nextState && this.currentState.constructor.name !== nextState.name) {
       const stateMemory = Utils.getStateMachineMemoryFor((<any>this.ref).name);
       if (this.states.has(nextState.name)) {
         const prevState = this.currentState;

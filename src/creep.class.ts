@@ -8,7 +8,7 @@ export class ICreep {
   private stateMachine: CreepStateMachine;
 
   constructor(public name: string, public stroke = "#ffffff") {
-    this.stateMachine = new CreepStateMachine(this.creep);
+    this.stateMachine = new CreepStateMachine(this);
   }
 
   public canRun() {
