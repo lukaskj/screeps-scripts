@@ -1,14 +1,18 @@
+import {CreepStateIdle, CreepStateMachine} from "./state.creep";
+
 export class ICreep {
   get creep() {
     return Game.creeps[this.name];
   }
 
-  constructor(public name: string, public stroke = "#ffffff") {}
+  private stateMachine: CreepStateMachine;
+
+  constructor(public name: string, public stroke = "#ffffff") {
+    this.stateMachine = new CreepStateMachine([CreepStateIdle], this.creep);
+  }
 
   public canRun() {
     if (this.creep.spawning) {
-      console.log("SPAWNING", this.creep.name);
-
       return false;
     }
 
@@ -24,6 +28,8 @@ export class ICreep {
   }
 
   public run() {
-    console.log("No controller found for creep", this.creep.name);
+    if (this.canRun()) {
+      this.stateMachine.update();
+    }
   }
 }
