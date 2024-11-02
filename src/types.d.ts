@@ -18,10 +18,19 @@ interface CreepMemory {
 
 interface IStateMachineMemory {
   currentState: string;
+  [key: string]: any;
+}
+
+type TCreepRoles = "worker";
+type TCreepSpecializations = "idle" | "harvester" | "builder" | "upgrader";
+
+interface TCreepMemory {
+  role: TCreepRoles;
+  specialization: TCreepSpecializations;
 }
 
 interface Memory {
-  creeps: {[name: string]: CreepMemory};
+  creeps: {[name: string]: TCreepMemory};
   powerCreeps: {[name: string]: PowerCreepMemory};
   flags: {[name: string]: FlagMemory};
   rooms: {[name: string]: RoomMemory};
@@ -31,7 +40,8 @@ interface Memory {
 }
 
 type TSpawnItem = {
-  role: string;
+  role: TCreepRoles;
+  specialization: TCreepSpecializations;
   total: number;
   body: BodyPartConstant[];
   options: object;

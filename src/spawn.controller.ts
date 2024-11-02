@@ -6,31 +6,11 @@ import {Utils} from "./utils";
 const spawns: TSpawnController = [
   {
     role: "worker",
+    specialization: "idle",
     total: 1,
     body: [WORK, CARRY, MOVE],
     options: {},
     priority: 0,
-  },
-  {
-    role: Harvester.role,
-    total: 0,
-    body: [WORK, CARRY, MOVE],
-    options: {},
-    priority: 0,
-  },
-  {
-    role: Upgrader.role,
-    total: 0,
-    body: [WORK, CARRY, MOVE],
-    options: {},
-    priority: 1,
-  },
-  {
-    role: Builder.role,
-    total: 0,
-    body: [WORK, CARRY, MOVE],
-    options: {},
-    priority: 2,
   },
 ];
 

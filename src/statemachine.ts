@@ -15,7 +15,7 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
       Logger.warn(`No 'name' nor 'id' for ref '${ref}'`);
     }
 
-    let shouldCallOnEnter = true;
+    let shouldCallOnEnter = false;
     let stateMemory = Utils.getStateMemoryFor((<any>ref).name ?? (<any>ref).id);
     if (!stateMemory) {
       shouldCallOnEnter = true;
@@ -25,6 +25,10 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
     let currentStateName = stateMemory.currentState;
 
     this.currentState = <T>this.states.get(currentStateName);
+
+    if (shouldCallOnEnter) {
+      this.currentState.onEnter(this.currentState);
+    }
   }
 
   private initState(name: string, currentStateName: string) {
@@ -69,8 +73,12 @@ export abstract class BaseState<T = TStateReference> {
     console.log(`Exited state: ${this.constructor.name}. Next state: ${nextState.constructor.name}`);
   }
 
-  public getMemory() {
-    const name = (<any>this.ref).name ? (<any>this.ref).name : (<any>this.ref).id ? (<any>this.ref).id : "";
+  public getNameOrId(): string {
+    return (<any>this.ref).name ? (<any>this.ref).name : (<any>this.ref).id ? (<any>this.ref).id : "";
+  }
+
+  public getStateMemory() {
+    const name = this.getNameOrId();
 
     return Utils.getStateMemoryFor(name);
   }

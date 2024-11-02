@@ -20,10 +20,11 @@ export class Utils {
     }
   }
 
-  static getStateMemoryFor(name: string) {
+  static getStateMemoryFor<T extends IStateMachineMemory>(name: string): T {
     if (!Memory.states) {
       Memory.states = {};
     }
-    return Memory.states[name];
+
+    return <T>Memory.states[name];
   }
 }
