@@ -1,8 +1,9 @@
+import {ErrorMapper} from "utils/error-mapper";
 import {CreepController} from "./creep.controller";
 import {SpawnController} from "./spawn.controller";
 import {UI} from "./ui";
 
-function loop() {
+export const loop = ErrorMapper.wrapLoop(() => {
   CreepController.cleanMemory();
 
   SpawnController.update();
@@ -11,19 +12,5 @@ function loop() {
     CreepController.from(creep).run();
   }
 
-  // switch (Game.time % 3) {
-  //   case 0:
-  //     Logger.error("Worked", Game.time);
-  //     break;
-  //   case 1:
-  //     Logger.warn("Worked", Game.time);
-  //     break;
-  //   case 2:
-  //     Logger.info("Worked", Game.time);
-  //     break;
-  // }
-
   UI.update();
-}
-
-export {loop};
+});

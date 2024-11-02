@@ -1,5 +1,5 @@
-import {CreepState} from "./state.creep";
-import {BaseState} from "./statemachine";
+import {CreepState} from ".";
+import {BaseState} from "../statemachine";
 
 export class CreepStateBuilder extends CreepState {
   override update(): ClassConstructor<BaseState> | undefined {

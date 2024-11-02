@@ -1,5 +1,5 @@
-import {Logger} from "./logger";
-import {Utils} from "./utils";
+import {Logger} from "../logger";
+import {Utils} from "../utils";
 
 export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
   private states = new Map<string, T>();

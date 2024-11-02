@@ -1,4 +1,4 @@
-import {CreepStateMachine} from "./state.creep";
+import {CreepStateMachine} from "./statemachine/creep/creep-statemachine";
 
 export class ICreep {
   get creep(): Creep {

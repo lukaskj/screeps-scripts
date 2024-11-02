@@ -1,6 +1,6 @@
 import {ICreep} from "./creep.class";
 import {CreepController} from "./creep.controller";
-import {BaseState} from "./statemachine";
+import {BaseState} from "./statemachine/statemachine";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   dateStyle: "short",
