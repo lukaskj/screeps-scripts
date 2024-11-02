@@ -1,5 +1,4 @@
 import {CreepController} from "./creep.controller";
-import {Logger} from "./logger";
 import {SpawnController} from "./spawn.controller";
 import {UI} from "./ui";
 
