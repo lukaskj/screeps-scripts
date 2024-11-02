@@ -1,6 +1,10 @@
 import {BaseState, StateMachine} from "./statemachine";
 
 export class CreepStateMachine extends StateMachine<Creep, CreepBaseState> {
+  constructor(ref: Creep) {
+    super([CreepStateIdle, CreepStateThinking], ref);
+  }
+
   public override update(): void {
     super.update();
 
