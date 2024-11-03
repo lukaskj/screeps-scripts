@@ -1,13 +1,12 @@
 import {CreepState} from "statemachine/creep/base-creep.state";
+import {Finder} from "utils/finder";
 import {ICreep} from "../../creep.class";
 import {BaseState} from "../statemachine";
-import {Finder} from "utils/finder";
-import {CreepStateHarvester} from "./creep.state.harvester";
-import {CreepStateTransfer} from "./creep.state.transfer";
 import {CreepStateBuilder} from "./creep.state.builder";
-import {CreepStateUpgrader} from "./creep.state.upgrader";
+import {CreepStateHarvester} from "./creep.state.harvester";
 import {CreepStateIdle} from "./creep.state.idle";
-import {Logger} from "logger";
+import {CreepStateTransfer} from "./creep.state.transfer";
+import {CreepStateUpgrader} from "./creep.state.upgrader";
 
 const MAX_SPECS_PER_ROOM: Record<TCreepSpecs, {max: number; priority: number}> = {
   upgrader: {
@@ -15,11 +14,11 @@ const MAX_SPECS_PER_ROOM: Record<TCreepSpecs, {max: number; priority: number}> =
     priority: 1,
   },
   builder: {
-    max: 3,
+    max: 4,
     priority: 1,
   },
   transfer: {
-    max: 1,
+    max: 4,
     priority: 1,
   },
   harvester: {

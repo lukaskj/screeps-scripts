@@ -44,7 +44,7 @@ interface Memory {
 type TSpawnItem = {
   role: TCreepRoles;
   spec: TCreepSpecs;
-  total: number;
+  max: number;
   body: BodyPartConstant[];
   options: object;
   priority: number;

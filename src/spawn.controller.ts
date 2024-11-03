@@ -4,7 +4,7 @@ const spawns: TSpawnController = [
   {
     role: "worker",
     spec: "idle",
-    total: 10,
+    max: 10,
     body: [WORK, CARRY, MOVE],
     options: {},
     priority: 0,
@@ -19,7 +19,7 @@ export class SpawnController {
       const role = spawnData.role;
       const allRoleCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
 
-      if (allRoleCreeps.length < spawnData.total) {
+      if (allRoleCreeps.length < spawnData.max) {
         const newName = `${role}-${Game.time}`;
         const spawner = Finder.getAvailableSpawner();
 

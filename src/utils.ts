@@ -16,14 +16,6 @@ export class Utils {
     return dateFormatter.format(date);
   }
 
-  static getAvailableSpawner() {
-    for (const spawnName in Game.spawns) {
-      if (Game.spawns[spawnName]) {
-        return Game.spawns[spawnName];
-      }
-    }
-  }
-
   static getStateMachineMemoryFor<T extends IStateMachineMemory>(refName: string): T {
     if (!Memory.states) {
       Memory.states = {};
@@ -51,5 +43,13 @@ export class Utils {
 
   public static distance(point1: RoomPosition, point2: RoomPosition) {
     return Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
+  }
+
+  public static calculateBodyParts(parts: BodyPartConstant | BodyPartConstant[]): number {
+    if (Array.isArray(parts)) {
+      return parts.reduce((acc, cur) => acc + BODYPART_COST[cur], 0);
+    }
+
+    return BODYPART_COST[parts];
   }
 }
