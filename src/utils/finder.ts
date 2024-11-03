@@ -34,4 +34,19 @@ export class Finder {
 
     return closest;
   }
+
+  public static getCreepSpecializationReport(room: Room): Record<TCreepSpecs, number> {
+    const myCreeps = room.find(FIND_MY_CREEPS);
+
+    return myCreeps.reduce((report, creep) => {
+      const creepMemory = <TCreepMemory>creep.memory;
+      report[creepMemory.spec] = (report[creepMemory.spec] ?? 0) + 1;
+
+      return report;
+    }, {} as Record<TCreepSpecs, number>);
+  }
+
+  public static getMyConstructionSites(room: Room) {
+    return room.find(FIND_MY_CONSTRUCTION_SITES);
+  }
 }

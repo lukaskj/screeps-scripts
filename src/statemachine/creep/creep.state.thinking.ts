@@ -1,18 +1,17 @@
 import {CreepState} from "statemachine/creep/base-creep.state";
 import {ICreep} from "../../creep.class";
-import {Utils} from "../../utils";
 import {BaseState} from "../statemachine";
-
 import {Finder} from "utils/finder";
 import {CreepStateHarvester} from "./creep.state.harvester";
 import {CreepStateTransfer} from "./creep.state.transfer";
 import {CreepStateBuilder} from "./creep.state.builder";
 import {CreepStateUpgrader} from "./creep.state.upgrader";
 import {CreepStateIdle} from "./creep.state.idle";
+import {Logger} from "logger";
 
 const MAX_SPECS_PER_ROOM: Record<TCreepSpecs, number> = {
   upgrader: 1,
-  builder: 1,
+  builder: 3,
   transfer: 1,
   harvester: Infinity,
   idle: Infinity,
@@ -29,21 +28,21 @@ export class CreepStateThinking extends CreepState {
     if (this.creep.store.getFreeCapacity() > 0) {
       return CreepStateHarvester;
     }
-    const structuresToTransfer = Finder.findStructuresToTransferEnergy(this.creep.room);
 
+    const structuresToTransfer = Finder.findStructuresToTransferEnergy(this.creep.room);
     if (structuresToTransfer.length > 0) {
       return CreepStateTransfer;
     }
 
     // Calculate next step
-    const roomCreepSpecializations = Utils.getCreepSpecializationReport(room);
-    const constructionSites = Utils.getMyConstructionSites(room);
+    const roomCreepSpecializations = Finder.getCreepSpecializationReport(room);
+    const constructionSites = Finder.getMyConstructionSites(room);
 
-    if (constructionSites.length > 0 && this.isSpecFull("builder", roomCreepSpecializations)) {
+    if (constructionSites.length > 0 && !this.isSpecFull("builder", roomCreepSpecializations)) {
       return CreepStateBuilder;
     }
 
-    if (this.creep.room.controller && this.isSpecFull("upgrader", roomCreepSpecializations)) {
+    if (this.creep.room.controller && !this.isSpecFull("upgrader", roomCreepSpecializations)) {
       return CreepStateUpgrader;
     }
 
@@ -59,7 +58,7 @@ export class CreepStateThinking extends CreepState {
     return CreepStateIdle;
   }
 
-  private isSpecFull(spec: TCreepSpecs, report: ReturnType<typeof Utils.getCreepSpecializationReport>): boolean {
+  private isSpecFull(spec: TCreepSpecs, report: ReturnType<typeof Finder.getCreepSpecializationReport>): boolean {
     return (report[spec] ?? 0) >= MAX_SPECS_PER_ROOM[spec];
   }
 }

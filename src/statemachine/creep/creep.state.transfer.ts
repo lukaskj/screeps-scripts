@@ -3,6 +3,7 @@ import {CreepState} from "./base-creep.state";
 import {BaseState} from "statemachine/statemachine";
 import {Finder} from "utils/finder";
 import {CreepStateThinking} from "./creep.state.thinking";
+import {CreepStateHarvester} from "./creep.state.harvester";
 
 export class CreepStateTransfer extends CreepState {
   constructor(ref: ICreep) {
@@ -12,6 +13,10 @@ export class CreepStateTransfer extends CreepState {
   override update(): ClassConstructor<BaseState> | undefined {
     const creep = this.creep;
     const icreep = this.icreep;
+
+    if (creep.store[RESOURCE_ENERGY] == 0) {
+      return CreepStateHarvester;
+    }
 
     const structuresToTransfer = Finder.findStructuresToTransferEnergy(creep.room);
 

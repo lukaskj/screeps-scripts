@@ -1,7 +1,4 @@
 import {ICreep} from "./creep.class";
-import {Builder} from "./role.builder";
-import {Harvester} from "./role.harvester";
-import {Upgrader} from "./role.upgrader";
 
 const allCreeps = new Map<string, ICreep>();
 

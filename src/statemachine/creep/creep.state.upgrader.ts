@@ -1,6 +1,7 @@
 import {ICreep} from "creep.class";
 import {BaseState} from "statemachine/statemachine";
 import {CreepState} from "./base-creep.state";
+import {CreepStateHarvester} from "./creep.state.harvester";
 import {CreepStateThinking} from "./creep.state.thinking";
 
 export class CreepStateUpgrader extends CreepState {
@@ -17,7 +18,7 @@ export class CreepStateUpgrader extends CreepState {
     }
 
     if (creep.store[RESOURCE_ENERGY] == 0) {
-      return CreepStateThinking;
+      return CreepStateHarvester;
     }
 
     const result = creep.upgradeController(creep.room.controller);

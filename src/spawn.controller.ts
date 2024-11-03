@@ -1,13 +1,10 @@
-import {Builder} from "./role.builder";
-import {Harvester} from "./role.harvester";
-import {Upgrader} from "./role.upgrader";
 import {Utils} from "./utils";
 
 const spawns: TSpawnController = [
   {
     role: "worker",
     spec: "idle",
-    total: 2,
+    total: 5,
     body: [WORK, CARRY, MOVE],
     options: {},
     priority: 0,

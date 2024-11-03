@@ -1,19 +1,16 @@
+import {CreepStateBuilder, CreepStateHarvester, CreepStateIdle, CreepStateThinking, CreepStateUpgrader} from "statemachine/creep";
 import {CreepState} from "statemachine/creep/base-creep.state";
-// import {CreepStateHarvester, CreepStateIdle, CreepStateThinking} from ".";
-import {CreepStateHarvester, CreepStateIdle, CreepStateThinking, CreepStateUpgrader} from "statemachine/creep";
 import {ICreep} from "../../creep.class";
 import {StateMachine} from "../statemachine";
 import {CreepStateTransfer} from "./creep.state.transfer";
 
 export class CreepStateMachine extends StateMachine<ICreep, CreepState> {
   constructor(ref: ICreep) {
-    super([CreepStateIdle, CreepStateThinking, CreepStateHarvester, CreepStateUpgrader, CreepStateTransfer], ref);
+    super([CreepStateIdle, CreepStateThinking, CreepStateHarvester, CreepStateUpgrader, CreepStateTransfer, CreepStateBuilder], ref);
   }
 
   public override update(): void {
     super.update();
-
-    // Logger.info(Utils.getCreepSpecializationReport(this.ref.creep.room));
 
     if (this.currentState && !!this.currentState.status) {
       const pos = this.ref.creep.pos;
