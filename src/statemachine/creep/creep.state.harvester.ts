@@ -3,6 +3,7 @@ import {ICreep} from "../../creep.class";
 import {BaseState} from "../statemachine";
 import {CreepStateThinking} from "./creep.state.thinking";
 import {Finder} from "utils/finder";
+import {Logger} from "logger";
 
 export class CreepStateHarvester extends CreepState {
   constructor(ref: ICreep) {
@@ -19,10 +20,10 @@ export class CreepStateHarvester extends CreepState {
       const closest = Finder.findClosestTo(creep, sources);
       const result = creep.harvest(closest);
 
-      if (result == ERR_NOT_IN_RANGE) {
+      if (result === ERR_NOT_IN_RANGE) {
         icreep.moveToTarget(closest);
-      }
-      if (result != OK) {
+      } else if (result != OK) {
+        Logger.error("Error harvesting", result);
         return CreepStateThinking;
       }
     } else {
