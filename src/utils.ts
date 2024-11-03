@@ -49,18 +49,22 @@ export class Utils {
     return <T>Memory.states[refName][stateName];
   }
 
-  static getCreepSpecializationReport(room: Room): Record<TCreepSpecializations, number> {
+  static getCreepSpecializationReport(room: Room): Record<TCreepSpecs, number> {
     const myCreeps = room.find(FIND_MY_CREEPS);
 
     return myCreeps.reduce((report, creep) => {
       const creepMemory = <TCreepMemory>creep.memory;
-      report[creepMemory.specialization] = (report[creepMemory.specialization] ?? 0) + 1;
+      report[creepMemory.spec] = (report[creepMemory.spec] ?? 0) + 1;
 
       return report;
-    }, {} as Record<TCreepSpecializations, number>);
+    }, {} as Record<TCreepSpecs, number>);
   }
 
   static getMyConstructionSites(room: Room) {
     return room.find(FIND_MY_CONSTRUCTION_SITES);
+  }
+
+  public static distance(point1: RoomPosition, point2: RoomPosition) {
+    return Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
   }
 }

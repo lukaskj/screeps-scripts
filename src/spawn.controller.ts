@@ -6,7 +6,7 @@ import {Utils} from "./utils";
 const spawns: TSpawnController = [
   {
     role: "worker",
-    specialization: "idle",
+    spec: "idle",
     total: 2,
     body: [WORK, CARRY, MOVE],
     options: {},
@@ -25,6 +25,7 @@ export class SpawnController {
       if (allRoleCreeps.length < spawnData.total) {
         const newName = `${role}-${Game.time}`;
         const spawner = Utils.getAvailableSpawner();
+
         if (!spawner) {
           console.log("No available spawner to spawn a", role);
           continue;

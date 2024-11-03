@@ -66,11 +66,11 @@ export abstract class BaseState<T = TStateReference> {
   constructor(public ref: T) {}
 
   public onEnter(prevState: BaseState<T>) {
-    console.log(`Entered state: ${this.constructor.name}. Next state: ${prevState.constructor.name}`);
+    // console.log(`Entered state: ${this.constructor.name}. Next state: ${prevState.constructor.name}`);
   }
 
   public onExit(nextState: BaseState<T>) {
-    console.log(`Exited state: ${this.constructor.name}. Next state: ${nextState.constructor.name}`);
+    // console.log(`Exited state: ${this.constructor.name}. Next state: ${nextState.constructor.name}`);
   }
 
   public getNameOrId(): string {

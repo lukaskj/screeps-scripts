@@ -22,11 +22,11 @@ interface IStateMachineMemory {
 }
 
 type TCreepRoles = "worker";
-type TCreepSpecializations = "idle" | "harvester" | "builder" | "upgrader";
+type TCreepSpecs = "idle" | "harvester" | "builder" | "upgrader" | "transfer";
 
 interface TCreepMemory {
   role: TCreepRoles;
-  specialization: TCreepSpecializations;
+  spec: TCreepSpecs;
   step: Record<string, boolean>;
   [key: string]: any;
 }
@@ -43,7 +43,7 @@ interface Memory {
 
 type TSpawnItem = {
   role: TCreepRoles;
-  specialization: TCreepSpecializations;
+  spec: TCreepSpecs;
   total: number;
   body: BodyPartConstant[];
   options: object;

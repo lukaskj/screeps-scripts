@@ -1,55 +1,32 @@
-import { ICreep } from "../../creep.class";
-import { CreepStateThinking } from "./creep.state.thinking";
-import { BaseState } from "../statemachine";
-import { CreepState } from "statemachine/creep/base-creep.state";
+import {CreepState} from "statemachine/creep/base-creep.state";
+import {ICreep} from "../../creep.class";
+import {BaseState} from "../statemachine";
+import {CreepStateThinking} from "./creep.state.thinking";
+import {Finder} from "utils/finder";
 
 export class CreepStateHarvester extends CreepState {
   constructor(ref: ICreep) {
-    super(ref, "⛏️");
-  }
-
-  public override onEnter(prevState: CreepState): void {
-    const memory = this.getMemory();
-    memory.specialization = "harvester";
+    super(ref, "⛏️", "harvester");
   }
 
   override update(): ClassConstructor<BaseState> | undefined {
     const icreep = this.ref;
     const creep = icreep.creep;
 
-    const memory = this.getMemory();
-
     if (creep.store.getFreeCapacity() > 0) {
       const sources = creep.room.find(FIND_SOURCES_ACTIVE);
-      if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-        icreep.moveToTarget(sources[0]);
+
+      const closest = Finder.findClosestTo(creep, sources);
+      const result = creep.harvest(closest);
+
+      if (result == ERR_NOT_IN_RANGE) {
+        icreep.moveToTarget(closest);
+      }
+      if (result != OK) {
+        return CreepStateThinking;
       }
     } else {
       return CreepStateThinking;
-      // const targets = creep.room.find(FIND_STRUCTURES, {
-      //   filter: (structure) => {
-      //     return (
-      //       STRUCTURES_TO_TRANSFER.includes(structure.structureType as any) &&
-      //       "store" in structure &&
-      //       structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-      //     );
-      //   },
-      // });
-
-      // if (targets.length > 0) {
-      //   const transferResult = creep.transfer(targets[0], RESOURCE_ENERGY);
-      //   switch (transferResult) {
-      //     case ERR_NOT_IN_RANGE:
-      //       icreep.moveToTarget(targets[0]);
-      //       break;
-      //     case ERR_FULL:
-      //       return CreepStateThinking;
-      //   }
-      // } else {
-      //   return CreepStateThinking;
-      // }
     }
-
-    return;
   }
 }
