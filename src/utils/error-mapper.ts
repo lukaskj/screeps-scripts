@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import {SourceMapConsumer} from "source-map";
 
 // from https://github.com/screepers/screeps-typescript-starter/
@@ -10,7 +11,7 @@ export class ErrorMapper {
       this._consumer = new SourceMapConsumer(require("main.js.map"));
     }
 
-    return <SourceMapConsumer>this._consumer;
+    return this._consumer;
   }
 
   // Cache previously mapped traces to improve performance

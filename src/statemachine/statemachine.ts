@@ -1,12 +1,16 @@
-import {Logger} from "../logger";
-import {Utils} from "../utils";
+import { Logger } from "../logger";
+import { Utils } from "../utils";
 
 export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
   private states = new Map<string, T>();
 
   public currentState: T;
 
-  constructor(stateClassList: ClassConstructor<T>[], protected ref: U, initialState?: ClassConstructor<T>) {
+  constructor(
+    stateClassList: ClassConstructor<T>[],
+    protected ref: U,
+    initialState?: ClassConstructor<T>,
+  ) {
     for (const stateClass of stateClassList) {
       this.states.set(stateClass.name, new stateClass(ref));
     }
@@ -22,7 +26,7 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
       stateMemory = this.initState((<any>ref).name, stateClassList[0]?.name ?? initialState?.name);
     }
 
-    let currentStateName = stateMemory.currentState;
+    const currentStateName = stateMemory.currentState;
 
     this.currentState = <T>this.states.get(currentStateName);
 
@@ -34,7 +38,7 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
   private initState(name: string, currentStateName: string) {
     const currentState = Utils.getStateMachineMemoryFor(name);
     if (!currentState) {
-      Memory.states[name] = {currentState: currentStateName};
+      Memory.states[name] = { currentState: currentStateName };
     }
 
     return Utils.getStateMachineMemoryFor(name);
@@ -65,11 +69,11 @@ export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
 export abstract class BaseState<T = TStateReference> {
   constructor(public ref: T) {}
 
-  public onEnter(prevState: BaseState<T>) {
+  public onEnter(_prevState: BaseState<T>) {
     // console.log(`Entered state: ${this.constructor.name}. Next state: ${prevState.constructor.name}`);
   }
 
-  public onExit(nextState: BaseState<T>) {
+  public onExit(_nextState: BaseState<T>) {
     // console.log(`Exited state: ${this.constructor.name}. Next state: ${nextState.constructor.name}`);
   }
 

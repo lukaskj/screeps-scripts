@@ -1,6 +1,4 @@
-import {ICreep} from "./creep.class";
-import {CreepController} from "./creep.controller";
-import {BaseState} from "./statemachine/statemachine";
+import { BaseState } from "./statemachine/statemachine";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   dateStyle: "short",
@@ -24,16 +22,16 @@ export class Utils {
     return <T>Memory.states[refName];
   }
 
-  static getStateMemoryFor<T extends any>(refName: string, state: ClassConstructor<BaseState> | string): T {
+  static getStateMemoryFor<T>(refName: string, state: ClassConstructor<BaseState> | string): T {
     if (!Memory.states) {
       Memory.states = {};
     }
 
     if (!Memory.states[refName]) {
-      Memory.states[refName] = {currentState: ""};
+      Memory.states[refName] = { currentState: "" };
     }
 
-    let stateName = typeof state !== "string" ? state.name : state;
+    const stateName = typeof state !== "string" ? state.name : state;
     if (!Memory.states[refName][stateName]) {
       Memory.states[refName][stateName] = {};
     }

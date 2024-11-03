@@ -35,7 +35,7 @@ class ConsoleUi {
 
     const x = logsData.x;
     const y = logsData.y;
-    let xLine = x;
+    const xLine = x;
     let yLine = y;
 
     for (let i = logsData.lines.length - 1; i >= 0; i--) {
@@ -56,7 +56,7 @@ class ConsoleUi {
   }
 
   static _drawWindow() {
-    const {x, y, width, height, lines} = Memory.ui.console;
+    const {x, y, height, lines} = Memory.ui.console;
 
     const widthCalculated = lines.reduce((acc, cur) => {
       const text = typeof cur === "object" ? cur.text : cur;

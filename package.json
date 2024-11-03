@@ -12,18 +12,27 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.14.0",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
+    "@types/eslint__js": "^8.42.3",
     "@types/lodash": "^4.17.13",
     "@types/node": "^22.8.6",
     "@types/screeps": "^3.3.8",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "nodemon": "^3.1.7",
+    "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "rollup": "^4.24.3",
     "rollup-plugin-typescript2": "^0.36.0",
     "tslib": "^2.8.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.12.2"
   },
   "dependencies": {
     "source-map": "0.6.1"

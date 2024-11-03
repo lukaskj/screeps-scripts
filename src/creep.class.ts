@@ -1,6 +1,7 @@
-import {CreepStateMachine} from "./statemachine/creep/creep-statemachine";
+import { CreepStateMachine } from "./statemachine/creep/creep-statemachine";
 
 export class ICreep {
+  protected stateMachine: CreepStateMachine;
   get creep(): Creep {
     return Game.creeps[this.name];
   }
@@ -9,11 +10,14 @@ export class ICreep {
     return this.creep.id;
   }
 
-  private stateMachine: CreepStateMachine;
-
-  constructor(public name: string, public stroke = "#ffffff") {
+  constructor(
+    public name: string,
+    public stroke = "#ffffff",
+  ) {
     this.stateMachine = new CreepStateMachine(this);
   }
+
+  
 
   public canRun() {
     if (this.creep.spawning) {
@@ -24,11 +28,11 @@ export class ICreep {
   }
 
   public moveTo(x: number, y: number, opts?: MoveToOpts) {
-    return this.creep.moveTo(x, y, {...opts, visualizePathStyle: {stroke: this.stroke}});
+    return this.creep.moveTo(x, y, { ...opts, visualizePathStyle: { stroke: this.stroke } });
   }
 
-  public moveToTarget(target: RoomPosition | {pos: RoomPosition}, opts?: MoveToOpts) {
-    return this.creep.moveTo(target, {...opts, visualizePathStyle: {stroke: this.stroke}});
+  public moveToTarget(target: RoomPosition | { pos: RoomPosition }, opts?: MoveToOpts) {
+    return this.creep.moveTo(target, { ...opts, visualizePathStyle: { stroke: this.stroke } });
   }
 
   public getMemory<T>(): TCreepMemory & T {

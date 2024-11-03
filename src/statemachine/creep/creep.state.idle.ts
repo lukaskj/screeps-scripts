@@ -1,7 +1,7 @@
-import {ICreep} from "../../creep.class";
-import {BaseState} from "../statemachine";
-import {CreepState, CreepStateThinking} from ".";
-import {Logger} from "logger";
+import { ICreep } from "../../creep.class";
+import { BaseState } from "../statemachine";
+import { CreepState, CreepStateThinking } from ".";
+import { Logger } from "logger";
 
 export class CreepStateIdle extends CreepState {
   constructor(ref: ICreep) {

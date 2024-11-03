@@ -1,22 +1,21 @@
-import {ICreep} from "creep.class";
-import {BaseState} from "statemachine/statemachine";
+import { ICreep } from "creep.class";
+import { BaseState } from "statemachine/statemachine";
 
 export abstract class CreepState extends BaseState<ICreep> {
-  get creep(): Creep {
-    return this.ref.creep;
-  }
+  public status = "";
 
-  get icreep(): ICreep {
-    return this.ref;
-  }
-
-  constructor(ref: ICreep, public status: string = "", public spec: TCreepSpecs = "idle") {
+  constructor(
+    ref: ICreep,
+    status: string = "",
+    public spec: TCreepSpecs = "idle",
+  ) {
     super(ref);
+    this.status = status;
 
     const memory = this.getMemory();
 
     if (!memory) {
-      Object.assign(memory, {role: "worker", spec, step: {}} satisfies TCreepMemory);
+      Object.assign(memory, { role: "worker", spec, step: {} } satisfies TCreepMemory);
     }
 
     if (!memory.role) {
@@ -28,7 +27,15 @@ export abstract class CreepState extends BaseState<ICreep> {
     }
   }
 
-  public override onEnter(prevState: CreepState): void {
+  get creep(): Creep {
+    return this.ref.creep;
+  }
+
+  get icreep(): ICreep {
+    return this.ref;
+  }
+
+  public override onEnter(_prevState: CreepState): void {
     this.getMemory().spec = this.spec;
   }
 

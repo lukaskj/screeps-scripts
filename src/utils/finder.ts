@@ -50,7 +50,7 @@ export class Finder {
     return room.find(FIND_MY_CONSTRUCTION_SITES);
   }
 
-  static getAvailableSpawner(room?: Room) {
+  static getAvailableSpawner(_room?: Room) {
     for (const spawnName in Game.spawns) {
       if (Game.spawns[spawnName]) {
         return Game.spawns[spawnName];

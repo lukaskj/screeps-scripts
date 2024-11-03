@@ -55,7 +55,7 @@ export class Logger {
       consoleData.lines.splice(0, 1);
     }
 
-    const dataToLog = !!options ? {text, ...options} : text;
+    const dataToLog = options ? {text, ...options} : text;
 
     consoleData.lines.push(dataToLog);
   }
