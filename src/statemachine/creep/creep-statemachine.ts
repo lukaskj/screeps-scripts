@@ -14,7 +14,7 @@ export class CreepStateMachine extends StateMachine<ICreep, CreepState> {
 
     if (this.currentState && !!this.currentState.status) {
       const pos = this.ref.creep.pos;
-      this.ref.creep.room.visual.text(this.currentState.status, pos.x + 0.5, pos.y - 0.5, {font: "16px", opacity: 0.7});
+      this.ref.creep.room.visual.text(this.currentState.status, pos.x + 0.2, pos.y - 0.2, {font: "16px", opacity: 0.7});
       // this.ref.creep.say(this.ref.getMemory().spec);
     }
   }

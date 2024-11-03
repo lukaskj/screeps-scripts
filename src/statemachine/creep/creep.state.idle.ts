@@ -18,7 +18,7 @@ export class CreepStateIdle extends CreepState {
 
     memory.tick = (memory.tick ?? 0) + 1;
 
-    if (memory.tick % 5 === 0) {
+    if (memory.tick % 2 === 0) {
       return CreepStateThinking;
     }
     return;

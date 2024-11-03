@@ -4,7 +4,7 @@ import {Utils} from "../utils";
 export class StateMachine<U, T extends BaseState<U> = BaseState<U>> {
   private states = new Map<string, T>();
 
-  protected currentState: T;
+  public currentState: T;
 
   constructor(stateClassList: ClassConstructor<T>[], protected ref: U, initialState?: ClassConstructor<T>) {
     for (const stateClass of stateClassList) {

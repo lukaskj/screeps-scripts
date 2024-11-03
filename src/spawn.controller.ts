@@ -1,10 +1,10 @@
-import {Utils} from "./utils";
+import {Finder} from "utils/finder";
 
 const spawns: TSpawnController = [
   {
     role: "worker",
     spec: "idle",
-    total: 5,
+    total: 10,
     body: [WORK, CARRY, MOVE],
     options: {},
     priority: 0,
@@ -21,7 +21,7 @@ export class SpawnController {
 
       if (allRoleCreeps.length < spawnData.total) {
         const newName = `${role}-${Game.time}`;
-        const spawner = Utils.getAvailableSpawner();
+        const spawner = Finder.getAvailableSpawner();
 
         if (!spawner) {
           console.log("No available spawner to spawn a", role);
