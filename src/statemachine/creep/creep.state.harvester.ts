@@ -3,6 +3,7 @@ import { Logger } from "../../logger";
 import { Finder } from "../../utils/finder";
 import { BaseState } from "../statemachine";
 import { CreepState } from "./base-creep.state";
+import { CreepStateIdle } from "./creep.state.idle";
 import { CreepStateThinking } from "./creep.state.thinking";
 
 export class CreepStateHarvester extends CreepState {
@@ -15,7 +16,13 @@ export class CreepStateHarvester extends CreepState {
     const creep = icreep.creep;
 
     if (creep.store.getFreeCapacity() > 0) {
-      const sources = creep.room.find(FIND_SOURCES_ACTIVE);
+      const sources = creep.room.find(FIND_SOURCES_ACTIVE, {
+        filter: (source) => source.energy >= 50,
+      });
+
+      if (!sources.length) {
+        return CreepStateIdle;
+      }
 
       const memory = this.getMemory();
       let target: Source = Finder.findClosestTo(creep, sources);
