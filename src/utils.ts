@@ -50,4 +50,33 @@ export class Utils {
 
     return BODYPART_COST[parts];
   }
+
+  public static calculateMaxBodyPartsForRoom(
+    room: Room,
+    parts: BodyPartConstant[],
+    minParts = 3,
+  ): BodyPartConstant[] | false {
+    const maxEnergy = room.energyCapacityAvailable;
+    let costTotal = 0;
+
+    for (let i = 0; i < parts.length; i++) {
+      const part = parts[i];
+      const partCost = BODYPART_COST[part];
+      if (costTotal + partCost > maxEnergy) {
+        if (i < minParts - 1) {
+          return false;
+        }
+
+        return parts.slice(0, i);
+      }
+
+      costTotal += partCost;
+    }
+
+    if (costTotal <= maxEnergy) {
+      return parts;
+    }
+
+    return false;
+  }
 }
