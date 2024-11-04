@@ -1,4 +1,4 @@
-import {Finder} from "utils/finder";
+import { Finder } from "./utils/finder";
 
 const spawns: TSpawnController = [
   {
@@ -15,23 +15,22 @@ const prioritySpawns = _.sortBy(spawns, "priority");
 
 export class SpawnController {
   public static update() {
-    for (const spawnData of prioritySpawns) {
-      const role = spawnData.role;
-      const allRoleCreeps = _.filter(Game.creeps, (creep) => creep.memory.role == role);
+    for (const spawnName in Game.spawns) {
+      const spawner = Game.spawns[spawnName];
 
-      if (allRoleCreeps.length < spawnData.max) {
-        const newName = `${role}-${Game.time}`;
-        const spawner = Finder.getAvailableSpawner();
+      const allRoleCreeps = Finder.getCreepRolesReport(spawner.room);
 
-        if (!spawner) {
-          console.log("No available spawner to spawn a", role);
-          continue;
-        }
+      for (const spawnData of prioritySpawns) {
+        const role = spawnData.role;
 
-        const result = spawner.spawnCreep(spawnData.body, newName, {...spawnData.options, memory: {role}});
-        if (result === OK) {
-          console.log(`Spawning new ${role} at ${spawner.name}:`, newName);
-          break;
+        if ((allRoleCreeps[role] ?? 0) < spawnData.max) {
+          const newName = `${role}-${Game.time}`;
+
+          const result = spawner.spawnCreep(spawnData.body, newName, { ...spawnData.options, memory: { role } });
+          if (result === OK) {
+            console.log(`Spawning new ${role} at ${spawner.name}:`, newName);
+            break;
+          }
         }
       }
     }

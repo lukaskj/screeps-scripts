@@ -1,5 +1,6 @@
-import { ICreep } from "creep.class";
-import { BaseState } from "statemachine/statemachine";
+import { ICreep } from "../../creep.class";
+import { BaseState } from "../statemachine";
+
 
 export abstract class CreepState extends BaseState<ICreep> {
   public status = "";

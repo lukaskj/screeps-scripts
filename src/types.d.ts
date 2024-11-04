@@ -1,4 +1,4 @@
-type TLines = string | {text: string; color: string};
+type TLines = string | { text: string; color: string };
 type TUiMemory = {
   console: {
     lines: TLines[];
@@ -32,13 +32,13 @@ interface TCreepMemory {
 }
 
 interface Memory {
-  creeps: {[name: string]: TCreepMemory};
-  powerCreeps: {[name: string]: PowerCreepMemory};
-  flags: {[name: string]: FlagMemory};
-  rooms: {[name: string]: RoomMemory};
-  spawns: {[name: string]: SpawnMemory};
+  creeps: { [name: string]: TCreepMemory };
+  powerCreeps: { [name: string]: PowerCreepMemory };
+  flags: { [name: string]: FlagMemory };
+  rooms: { [name: string]: RoomMemory };
+  spawns: { [name: string]: SpawnMemory };
   ui: TUiMemory;
-  states: {[name: string]: IStateMachineMemory};
+  states: { [name: string]: IStateMachineMemory };
 }
 
 type TSpawnItem = {
@@ -50,9 +50,9 @@ type TSpawnItem = {
   priority: number;
 };
 
-type TStateNamedReference = {name: string; [key: string]: any};
-type TStateIdReference = {id: string; [key: string]: any};
+type TStateNamedReference = { name: string; [key: string]: any };
+type TStateIdReference = { id: string; [key: string]: any };
 type TStateReference = TStateNamedReference | TStateIdReference;
 
 type TSpawnController = TSpawnItem[];
-type ClassConstructor<T> = {new (...args: any[]): T};
+type ClassConstructor<T> = { new (...args: any[]): T };

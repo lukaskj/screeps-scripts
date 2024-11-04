@@ -5,7 +5,7 @@
     "target": "es2018",
     "moduleResolution": "Node",
     "moduleDetection": "force",
-    "baseUrl": "src/",
+    "baseUrl": "./",
     "sourceMap": true,
     "allowUmdGlobalAccess": true,
     "outDir": "./dist",
@@ -25,5 +25,5 @@
     // "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "test"]
 }

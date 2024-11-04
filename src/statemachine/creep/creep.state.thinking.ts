@@ -1,7 +1,8 @@
-import {CreepState} from "statemachine/creep/base-creep.state";
-import {Finder} from "utils/finder";
+
 import {ICreep} from "../../creep.class";
+import { Finder } from "../../utils/finder";
 import {BaseState} from "../statemachine";
+import { CreepState } from "./base-creep.state";
 import {CreepStateBuilder} from "./creep.state.builder";
 import {CreepStateHarvester} from "./creep.state.harvester";
 import {CreepStateIdle} from "./creep.state.idle";

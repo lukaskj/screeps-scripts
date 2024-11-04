@@ -1,4 +1,4 @@
-import {Utils} from "utils";
+import { Utils } from "../utils";
 
 const STRUCTURES_TO_TRANSFER_ENERGY = [STRUCTURE_EXTENSION, STRUCTURE_SPAWN];
 
@@ -15,7 +15,10 @@ export class Finder {
     });
   }
 
-  public static findClosestTo<T extends RoomObject | {pos: RoomPosition}>(target: RoomObject | {pos: RoomPosition}, objects: T[]): T {
+  public static findClosestTo<T extends RoomObject | { pos: RoomPosition }>(
+    target: RoomObject | { pos: RoomPosition },
+    objects: T[],
+  ): T {
     const targetPost = target.pos;
 
     if (objects.length === 1) {
@@ -35,15 +38,31 @@ export class Finder {
     return closest;
   }
 
+  public static getCreepRolesReport(room: Room): Record<TCreepRoles, number> {
+    const myCreeps = room.find(FIND_MY_CREEPS);
+
+    return myCreeps.reduce(
+      (report, creep) => {
+        const creepMemory = <TCreepMemory>creep.memory;
+        report[creepMemory.role] = (report[creepMemory.role] ?? 0) + 1;
+
+        return report;
+      },
+      {} as Record<TCreepRoles, number>,
+    );
+  }
   public static getCreepSpecializationReport(room: Room): Record<TCreepSpecs, number> {
     const myCreeps = room.find(FIND_MY_CREEPS);
 
-    return myCreeps.reduce((report, creep) => {
-      const creepMemory = <TCreepMemory>creep.memory;
-      report[creepMemory.spec] = (report[creepMemory.spec] ?? 0) + 1;
+    return myCreeps.reduce(
+      (report, creep) => {
+        const creepMemory = <TCreepMemory>creep.memory;
+        report[creepMemory.spec] = (report[creepMemory.spec] ?? 0) + 1;
 
-      return report;
-    }, {} as Record<TCreepSpecs, number>);
+        return report;
+      },
+      {} as Record<TCreepSpecs, number>,
+    );
   }
 
   public static getMyConstructionSites(room: Room) {
