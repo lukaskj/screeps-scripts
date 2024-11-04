@@ -17,7 +17,7 @@ export class CreepStateHarvester extends CreepState {
 
     if (creep.store.getFreeCapacity() > 0) {
       const sources = creep.room.find(FIND_SOURCES_ACTIVE, {
-        filter: (source) => source.energy >= 50,
+        filter: (source) => source.energy >= 1,
       });
 
       if (!sources.length) {
