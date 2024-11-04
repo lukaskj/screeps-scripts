@@ -6,7 +6,7 @@ const spawns: TSpawnController = [
   {
     role: "worker",
     spec: "idle",
-    max: 12,
+    max: 10,
     body: [WORK, CARRY, MOVE, WORK, MOVE, CARRY, WORK, WORK, MOVE],
     options: {},
     priority: 0,
