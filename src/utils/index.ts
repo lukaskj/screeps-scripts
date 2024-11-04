@@ -1,4 +1,4 @@
-import { BaseState } from "./statemachine/statemachine";
+import { BaseState } from "../statemachine/statemachine";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   dateStyle: "short",

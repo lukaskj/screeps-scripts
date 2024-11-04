@@ -1,4 +1,4 @@
-import { Utils } from "../utils";
+import { Utils } from ".";
 
 const STRUCTURES_TO_TRANSFER_ENERGY = [STRUCTURE_EXTENSION, STRUCTURE_SPAWN];
 
