@@ -26,7 +26,6 @@ export class CreepStateThinking extends CreepState {
     const roomCreepSpecializations = Finder.getCreepSpecializationReport(room);
     if (this.creep.room.controller) {
       if (this.creep.room.controller.ticksToDowngrade < 500) {
-        console.log("UPGRADER", 1, this.creep.room.controller.ticksToDowngrade);
         return CreepStateUpgrader;
       }
 
@@ -35,7 +34,6 @@ export class CreepStateThinking extends CreepState {
         this.creep.room.controller.level === 1 &&
         !this.isSpecFull("upgrader", roomCreepSpecializations)
       ) {
-        console.log("UPGRADER", 2, "totalCreepsForRoom.length", totalCreepsForRoom.length);
         return CreepStateUpgrader;
       }
     }
@@ -43,7 +41,6 @@ export class CreepStateThinking extends CreepState {
     // Transfer checks
     if (!this.isSpecFull("transfer", roomCreepSpecializations)) {
       const structuresToTransfer = Finder.findStructuresToTransferEnergy(this.creep.room);
-      console.log("TRANSFER", 1, "structuresToTransfer.length", structuresToTransfer.length);
       if (structuresToTransfer.length > 0) {
         return CreepStateTransfer;
       }
@@ -56,12 +53,10 @@ export class CreepStateThinking extends CreepState {
     }
 
     if (this.creep.room.controller && !this.isSpecFull("upgrader", roomCreepSpecializations)) {
-      console.log("UPGRADER", 3, "BYASS 1", totalCreepsForRoom.length);
       return CreepStateUpgrader;
     }
 
     if (this.creep.room.controller) {
-      console.log("UPGRADER", 4, "BYASS 2", totalCreepsForRoom.length);
       // Otherwise, upgrade bypassing spec max
       return CreepStateUpgrader;
     }
