@@ -24,5 +24,5 @@ New-Item -ItemType SymbolicLink -Path C:\Users\[User]\AppData\Local\Screeps\scri
 
 
 ## TODO
-[ ] Use Screeps API
+- [ ] Use Screeps API
 
