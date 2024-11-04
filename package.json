@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "tsc -p . --noEmit && eslint",
     "build": "rollup -c",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "test": "jest -c jest.config.js"
   },
   "keywords": [],
   "author": "",
