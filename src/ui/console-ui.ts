@@ -1,30 +1,8 @@
-import {Utils} from "./utils";
+import { Utils } from "../utils";
 
-type TLines = string[] | {text: string; color: string}[];
-const defaultUiMemory = {
-  console: {
-    lines: [] as TLines,
-    tick: 0,
-    maxLines: 5,
-    speed: 15,
-    x: 0,
-    y: 49,
-    width: 22,
-    height: 5,
-  },
-};
-
-export class UI {
-  public static update(): void {
-    if (!Memory.ui) Memory.ui = {...defaultUiMemory};
-
-    ConsoleUi.updateConsole();
-  }
-}
-
-class ConsoleUi {
+export class ConsoleUi {
   static updateConsole() {
-    this._drawWindow();
+    this._drawConsoleWindow();
     const logsData = Memory.ui.console;
 
     logsData.tick = (logsData.tick || 0) + 1;
@@ -48,15 +26,15 @@ class ConsoleUi {
       }
 
       Utils.allRooms().forEach((room) => {
-        room.visual.text(text, xLine, yLine, {align: "left", color, font: "0.8 Consolas"});
+        room.visual.text(text, xLine, yLine, { align: "left", color, font: "0.8 Consolas" });
       });
 
       yLine--;
     }
   }
 
-  static _drawWindow() {
-    const {x, y, height, lines} = Memory.ui.console;
+  static _drawConsoleWindow() {
+    const { x, y, height, lines } = Memory.ui.console;
 
     const widthCalculated = lines.reduce((acc, cur) => {
       const text = typeof cur === "object" ? cur.text : cur;
@@ -67,7 +45,7 @@ class ConsoleUi {
     }, 0);
 
     Utils.allRooms().forEach((room) => {
-      room.visual.rect(x - 0.6, y - height + 0.2, widthCalculated / 2, height, {fill: "#000000", opacity: 0.25});
+      room.visual.rect(x - 0.6, y - height + 0.2, widthCalculated / 2, height, { fill: "#000000", opacity: 0.25 });
     });
   }
 }

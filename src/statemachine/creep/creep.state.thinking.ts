@@ -19,7 +19,7 @@ const MAX_SPECS_PER_ROOM: Record<TCreepSpecs, {max: number; priority: number}> =
     priority: 1,
   },
   transfer: {
-    max: 4,
+    max: 3,
     priority: 1,
   },
   harvester: {
