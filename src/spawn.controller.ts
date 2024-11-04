@@ -41,7 +41,10 @@ export class SpawnController {
           }
 
           const newName = `${role}-${Game.time}`;
-          const result = spawner.spawnCreep(creepBodyParts, newName, { ...spawnData.options, memory: { role, spec } });
+          const result = spawner.spawnCreep(creepBodyParts, newName, {
+            ...spawnData.options,
+            memory: { role, spec, room: spawner.room.name } satisfies TCreepMemory,
+          });
           if (result === OK) {
             console.log(`Spawning new ${role} at ${spawner.name}:`, newName);
             break;

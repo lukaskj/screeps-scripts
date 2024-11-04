@@ -1,13 +1,13 @@
 import { ICreep } from "../../creep.class";
-import { Finder } from "../../utils/finder";
-import { BaseState } from "../statemachine";
-import { CreepState } from "./base-creep.state";
+import { Finder } from "../../../utils/finder";
+import { BaseState } from "../../../statemachine/statemachine";
+import { CreepState } from "../base-creep.state";
 import { CreepStateHarvester } from "./creep.state.harvester";
 import { CreepStateThinking } from "./creep.state.thinking";
 
 export class CreepStateTransfer extends CreepState {
   constructor(ref: ICreep) {
-    super(ref, "🔁", "transfer");
+    super(ref, "🔁", "worker", "transfer");
   }
 
   override update(): ClassConstructor<BaseState> | undefined {

@@ -1,31 +1,31 @@
 import { ICreep } from "../../creep.class";
-import { Logger } from "../../logger";
-import { Finder } from "../../utils/finder";
-import { BaseState } from "../statemachine";
-import { CreepState } from "./base-creep.state";
+import { Logger } from "../../../logger";
+import { Finder } from "../../../utils/finder";
+import { BaseState } from "../../../statemachine/statemachine";
+import { CreepState } from "../base-creep.state";
 import { CreepStateIdle } from "./creep.state.idle";
 import { CreepStateThinking } from "./creep.state.thinking";
 
 export class CreepStateHarvester extends CreepState {
   constructor(ref: ICreep) {
-    super(ref, "🚜", "harvester");
+    super(ref, "🚜", "worker", "harvester");
   }
 
   override update(): ClassConstructor<BaseState> | undefined {
     const icreep = this.ref;
     const creep = icreep.creep;
+    const room = creep.room;
 
     if (creep.store.getFreeCapacity() > 0) {
-      const sources = creep.room.find(FIND_SOURCES_ACTIVE, {
-        filter: (source) => source.energy >= 1,
-      });
+      const sources = [...Finder.availableEnergySites(room), ...Finder.droppedResources(room)];
+
+      const memory = this.getMemory();
 
       if (!sources.length) {
         return CreepStateIdle;
       }
 
-      const memory = this.getMemory();
-      let target: Source = Finder.findClosestTo(creep, sources);
+      let target = Finder.findClosestTo(creep, sources);
       if (memory.sourceToHarvestId) {
         target = Game.getObjectById<Source>(memory.sourceToHarvestId) ?? target;
       }
@@ -34,7 +34,15 @@ export class CreepStateHarvester extends CreepState {
         delete memory.sourceToHarvestId;
       }
 
-      const result = creep.harvest(target);
+      let result: number = OK;
+
+      if (target instanceof Source) {
+        result = creep.harvest(target);
+      } else if (target instanceof Resource) {
+        result = creep.pickup(target);
+      } else {
+        result = creep.withdraw(target, RESOURCE_ENERGY);
+      }
 
       if (result === ERR_NOT_IN_RANGE) {
         const moveResult = icreep.moveToTarget(target);

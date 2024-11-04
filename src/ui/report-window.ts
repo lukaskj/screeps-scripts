@@ -1,3 +1,4 @@
+import { MAX_CREEP_SPECS_PER_ROOM } from "../constants/max-creep-specs-per-room";
 import { Finder } from "../utils";
 
 export class ReportWindow {
@@ -38,7 +39,7 @@ export class ReportWindow {
 
   private static addRoomInfoLines(room: Room, lines: TLine[]) {
     lines.push({
-      text: `Name: ${room.name}`,
+      text: `Room: ${room.name}`,
       style: {
         color: "#29B6F6",
       },
@@ -54,7 +55,7 @@ export class ReportWindow {
     const controllerColor = "#90A4AE";
     if (room.controller) {
       lines.push({
-        text: `Controller: ${room.controller.level} (${room.controller.progress}/${room.controller.progressTotal})`,
+        text: `Controller: Lvl ${room.controller.level} (${room.controller.progress}/${room.controller.progressTotal})`,
         style: {
           color: controllerColor,
         },
@@ -71,6 +72,7 @@ export class ReportWindow {
 
   private static addCreepReportLines(room: Room, lines: TLine[]) {
     const creepFullCountReport = Finder.getCreepFullRolesReport(room);
+    lines.push("----");
     lines.push({
       text: "Creep roles:",
       style: {
@@ -79,7 +81,19 @@ export class ReportWindow {
     });
 
     for (const roleAndSpec in creepFullCountReport) {
-      lines.push(`${roleAndSpec}: ${creepFullCountReport[roleAndSpec]}`);
+      let text = `${roleAndSpec}: ${creepFullCountReport[roleAndSpec]}`;
+      const spec = roleAndSpec.split("/")[1];
+      if (spec) {
+        const maxSpec = MAX_CREEP_SPECS_PER_ROOM[spec];
+        if (maxSpec) {
+          if (maxSpec.max === Infinity) {
+            text += `/∞`;
+          } else {
+            text += `/${maxSpec.max}`;
+          }
+        }
+      }
+      lines.push(text);
     }
   }
 }

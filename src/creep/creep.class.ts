@@ -1,7 +1,6 @@
-import { CreepStateMachine } from "./statemachine/creep/creep-statemachine";
+import { CreepStateMachine } from "./statemachine/creep-statemachine";
 
 export class ICreep {
-  protected stateMachine: CreepStateMachine;
   get creep(): Creep {
     return Game.creeps[this.name];
   }
@@ -10,14 +9,15 @@ export class ICreep {
     return this.creep.id;
   }
 
+  public stateMachine?: CreepStateMachine;
+
   constructor(
     public name: string,
     public stroke = "#ffffff",
+    stateMachine?: CreepStateMachine,
   ) {
-    this.stateMachine = new CreepStateMachine(this);
+    this.stateMachine = stateMachine;
   }
-
-  
 
   public canRun() {
     if (this.creep.spawning) {
@@ -41,7 +41,7 @@ export class ICreep {
 
   public run() {
     if (this.canRun()) {
-      this.stateMachine.update();
+      this.stateMachine?.update();
     }
   }
 }

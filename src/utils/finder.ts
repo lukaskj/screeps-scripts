@@ -53,9 +53,7 @@ export class Finder {
   }
 
   public static getCreepSpecializationReport(room: Room): Record<TCreepSpecs, number> {
-    const myCreeps = room.find(FIND_MY_CREEPS);
-
-    return myCreeps.reduce(
+    return this.getCreepsFromRoom(room).reduce(
       (report, creep) => {
         const creepMemory = <TCreepMemory>creep.memory;
         report[creepMemory.spec] = (report[creepMemory.spec] ?? 0) + 1;
@@ -67,9 +65,7 @@ export class Finder {
   }
 
   public static getCreepFullRolesReport(room: Room): Record<string, number> {
-    const myCreeps = room.find(FIND_MY_CREEPS);
-
-    return myCreeps.reduce(
+    return this.getCreepsFromRoom(room).reduce(
       (report, creep) => {
         const creepMemory = <TCreepMemory>creep.memory;
         report[creepMemory.role] = (report[creepMemory.role] ?? 0) + 1;
@@ -80,6 +76,27 @@ export class Finder {
       },
       {} as Record<string, number>,
     );
+  }
+
+  public static getCreepsFromRoom(room: Room): Creep[] {
+    return room.find(FIND_MY_CREEPS, {
+      filter: (creep: Creep) => {
+        const memory = <TCreepMemory>creep.memory;
+        return memory.room === room.name;
+      },
+    });
+  }
+
+  public static availableEnergySites(room: Room) {
+    return room.find(FIND_SOURCES_ACTIVE, {
+      filter: (source) => source.energy >= 1,
+    });
+  }
+
+  public static droppedResources(room: Room) {
+    return room.find(FIND_TOMBSTONES && FIND_DROPPED_RESOURCES, {
+      filter: (tombstone) => (tombstone instanceof Tombstone ? tombstone.store[RESOURCE_ENERGY] >= 1 : true),
+    });
   }
 
   public static getMyConstructionSites(room: Room) {

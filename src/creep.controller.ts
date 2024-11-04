@@ -1,8 +1,11 @@
-import { ICreep } from "./creep.class";
+import { ICreep } from "./creep/creep.class";
+import { RoleWorker } from "./creep/roles";
+import { Logger } from "./logger";
 
 const allCreeps = new Map<string, ICreep>();
 
-const ByRole = {
+const ByRole: Record<TCreepRoles, ClassConstructor<ICreep>> = {
+  worker: RoleWorker,
   // [Harvester.role]: Harvester,
   // [Builder.role]: Builder,
   // [Upgrader.role]: Upgrader,
@@ -11,10 +14,9 @@ const ByRole = {
 export class CreepController {
   public static from(creep: Creep): ICreep {
     if (!allCreeps.has(creep.name)) {
-      // console.log(`CREATING NEW INSTANCE FOR ${creep.name}`, allCreeps.size);
       let clazz: ClassConstructor<ICreep> = ByRole[creep.memory.role];
       if (!clazz) {
-        // Logger.warn(`No class for role ${creep.memory.role}`);
+        Logger.warn(`No class for role ${creep.memory.role}`);
 
         clazz = ICreep;
       }
@@ -28,6 +30,7 @@ export class CreepController {
   public static cleanMemory() {
     for (const name in Memory.creeps) {
       if (!Game.creeps[name]) {
+        Logger.info(`Creep '${name}' died.`);
         console.log("Clearing non-existing creep memory:", name);
         delete Memory.creeps[name];
 

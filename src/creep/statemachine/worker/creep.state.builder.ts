@@ -1,12 +1,11 @@
-
-import {CreepState, CreepStateHarvester, CreepStateThinking} from ".";
+import { CreepState, CreepStateHarvester, CreepStateThinking } from ".";
 import { ICreep } from "../../creep.class";
-import { Finder } from "../../utils/finder";
-import {BaseState} from "../statemachine";
+import { Finder } from "../../../utils/finder";
+import { BaseState } from "../../../statemachine/statemachine";
 
 export class CreepStateBuilder extends CreepState {
   constructor(ref: ICreep) {
-    super(ref, "🔨", "builder");
+    super(ref, "🔨", "worker", "builder");
   }
 
   override update(): ClassConstructor<BaseState> | undefined {
@@ -23,7 +22,13 @@ export class CreepStateBuilder extends CreepState {
       return CreepStateThinking;
     }
 
-    const closest = Finder.findClosestTo(creep, constructionSites);
+    const prioritySites = _.filter(
+      constructionSites,
+      (site: ConstructionSite<BuildableStructureConstant>) =>
+        ![STRUCTURE_ROAD, STRUCTURE_WALL].includes(site.structureType as any),
+    );
+
+    const closest = Finder.findClosestTo(creep, prioritySites.length ? prioritySites : constructionSites);
 
     const result = creep.build(closest);
 

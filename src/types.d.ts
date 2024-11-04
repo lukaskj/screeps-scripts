@@ -35,7 +35,7 @@ type TCreepSpecs = "idle" | "harvester" | "builder" | "upgrader" | "transfer";
 interface TCreepMemory {
   role: TCreepRoles;
   spec: TCreepSpecs;
-  step: Record<string, boolean>;
+  room: string;
   [key: string]: any;
 }
 

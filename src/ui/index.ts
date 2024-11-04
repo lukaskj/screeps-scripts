@@ -7,7 +7,7 @@ export const DEFAULT_UI_MEMORY: typeof Memory.ui = {
     lines: [] as TLines,
     tick: 0,
     maxLines: 5,
-    speed: 15,
+    speed: 25,
     x: 0,
     y: 49,
     width: 22,
