@@ -43,7 +43,7 @@ export class Utils {
     return Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
   }
 
-  public static calculateBodyParts(parts: BodyPartConstant | BodyPartConstant[]): number {
+  public static calculateBodyPartsCost(parts: BodyPartConstant | BodyPartConstant[]): number {
     if (Array.isArray(parts)) {
       return parts.reduce((acc, cur) => acc + BODYPART_COST[cur], 0);
     }

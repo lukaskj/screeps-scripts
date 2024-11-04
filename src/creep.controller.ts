@@ -1,5 +1,4 @@
 import { ICreep } from "./creep.class";
-import { Logger } from "./logger";
 
 const allCreeps = new Map<string, ICreep>();
 
@@ -15,7 +14,7 @@ export class CreepController {
       // console.log(`CREATING NEW INSTANCE FOR ${creep.name}`, allCreeps.size);
       let clazz: ClassConstructor<ICreep> = ByRole[creep.memory.role];
       if (!clazz) {
-        Logger.warn(`No class for role ${creep.memory.role}`);
+        // Logger.warn(`No class for role ${creep.memory.role}`);
 
         clazz = ICreep;
       }

@@ -45,5 +45,23 @@ describe("Utils", () => {
         expect(result).toEqual(expected);
       });
     });
+
+    describe("calculateBodyPartsCost", () => {
+      const testCases: [BodyPartConstant | BodyPartConstant[], number][] = [
+        [WORK, 100],
+        [[WORK, WORK], 200],
+        [[HEAL, WORK], 350],
+        [[CLAIM, MOVE, MOVE], 700],
+        [[CARRY, WORK, WORK, MOVE, MOVE], 350],
+      ];
+      test.each(testCases)(
+        "cost of %p should be %d",
+        (parts: BodyPartConstant | BodyPartConstant[], expected: number) => {
+          const result = Utils.calculateBodyPartsCost(parts);
+
+          expect(result).toBe(expected);
+        },
+      );
+    });
   });
 });
