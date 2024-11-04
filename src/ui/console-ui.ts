@@ -1,8 +1,9 @@
-import { Utils } from "../utils";
+import { Finder } from "../utils";
 
 export class ConsoleUi {
-  static updateConsole() {
+  static draw() {
     this._drawConsoleWindow();
+    const opacity = Memory.ui.opacity;
     const logsData = Memory.ui.console;
 
     logsData.tick = (logsData.tick || 0) + 1;
@@ -19,14 +20,14 @@ export class ConsoleUi {
     for (let i = logsData.lines.length - 1; i >= 0; i--) {
       const line = logsData.lines[i];
       let text = typeof line === "string" ? line : "";
-      let color = "white";
+      const style: TextStyle = {};
       if (typeof line === "object" && line.text) {
         text = line.text;
-        color = line.color || "white";
+        Object.assign(style, line.style);
       }
 
-      Utils.allRooms().forEach((room) => {
-        room.visual.text(text, xLine, yLine, { align: "left", color, font: "0.8 Consolas" });
+      Finder.allRooms().forEach((room) => {
+        room.visual.text(text, xLine, yLine, { ...style, align: "left", opacity, font: "0.8 Consolas" });
       });
 
       yLine--;
@@ -44,7 +45,7 @@ export class ConsoleUi {
       return text.length;
     }, 0);
 
-    Utils.allRooms().forEach((room) => {
+    Finder.allRooms().forEach((room) => {
       room.visual.rect(x - 0.6, y - height + 0.2, widthCalculated / 2, height, { fill: "#000000", opacity: 0.25 });
     });
   }

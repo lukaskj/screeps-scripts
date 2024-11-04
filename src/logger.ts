@@ -1,5 +1,5 @@
-import {COLORS} from "./constants";
-import {Utils} from "./utils";
+import { COLORS } from "./constants";
+import { Utils } from "./utils";
 
 const colorKey = Symbol.for("color");
 
@@ -16,7 +16,7 @@ export class Logger {
   }
 
   static log(...args) {
-    let options: {color: string} | undefined = undefined;
+    let options: TextStyle = {};
     if (args.length && typeof args[args.length - 1] === "object" && !!args[args.length - 1][colorKey]) {
       options = {
         color: args[args.length - 1][colorKey],
@@ -37,14 +37,14 @@ export class Logger {
   }
 
   static error(...args) {
-    this.log("🛑", ...args, {[colorKey]: COLORS.ERROR});
+    this.log("🛑", ...args, { [colorKey]: COLORS.ERROR });
   }
 
   static warn(...args) {
-    this.log("⚠️", ...args, {[colorKey]: COLORS.WARN});
+    this.log("⚠️", ...args, { [colorKey]: COLORS.WARN });
   }
 
-  addTextToWindow(text, options) {
+  addTextToWindow(text: string, style: TextStyle) {
     if (!Memory.ui || !Memory.ui.console || !Memory.ui.console.lines) {
       return;
     }
@@ -55,7 +55,7 @@ export class Logger {
       consoleData.lines.splice(0, 1);
     }
 
-    const dataToLog = options ? {text, ...options} : text;
+    const dataToLog: TLine = style ? ({ text, style } satisfies TLine) : text;
 
     consoleData.lines.push(dataToLog);
   }

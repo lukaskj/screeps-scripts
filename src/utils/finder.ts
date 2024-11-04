@@ -51,6 +51,7 @@ export class Finder {
       {} as Record<TCreepRoles, number>,
     );
   }
+
   public static getCreepSpecializationReport(room: Room): Record<TCreepSpecs, number> {
     const myCreeps = room.find(FIND_MY_CREEPS);
 
@@ -65,15 +66,35 @@ export class Finder {
     );
   }
 
+  public static getCreepFullRolesReport(room: Room): Record<string, number> {
+    const myCreeps = room.find(FIND_MY_CREEPS);
+
+    return myCreeps.reduce(
+      (report, creep) => {
+        const creepMemory = <TCreepMemory>creep.memory;
+        report[creepMemory.role] = (report[creepMemory.role] ?? 0) + 1;
+        report[`${creepMemory.role}/${creepMemory.spec}`] =
+          (report[`${creepMemory.role}/${creepMemory.spec}`] ?? 0) + 1;
+
+        return report;
+      },
+      {} as Record<string, number>,
+    );
+  }
+
   public static getMyConstructionSites(room: Room) {
     return room.find(FIND_MY_CONSTRUCTION_SITES);
   }
 
-  static getAvailableSpawner(_room?: Room) {
+  public static getAvailableSpawner(_room?: Room) {
     for (const spawnName in Game.spawns) {
       if (Game.spawns[spawnName]) {
         return Game.spawns[spawnName];
       }
     }
+  }
+
+  public static allRooms() {
+    return Object.values(Game.rooms);
   }
 }

@@ -1,7 +1,10 @@
-type TLines = string | { text: string; color: string };
+type TLine = string | { text: string; style: TextStyle };
+type TLines = TLine[];
+
 type TUiMemory = {
+  opacity: number;
   console: {
-    lines: TLines[];
+    lines: TLines;
     tick: number;
     maxLines: number;
     speed: number;
@@ -9,6 +12,11 @@ type TUiMemory = {
     y: number;
     width: number;
     height: number;
+  };
+  report: {
+    lines: TLines;
+    x: number;
+    y: number;
   };
 };
 

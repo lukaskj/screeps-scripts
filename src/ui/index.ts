@@ -1,7 +1,8 @@
 import { ConsoleUi } from "./console-ui";
+import { ReportWindow } from "./report-window";
 
-type TLines = string[] | { text: string; color: string }[];
-const defaultUiMemory = {
+export const DEFAULT_UI_MEMORY: typeof Memory.ui = {
+  opacity: 0.8,
   console: {
     lines: [] as TLines,
     tick: 0,
@@ -12,12 +13,16 @@ const defaultUiMemory = {
     width: 22,
     height: 5,
   },
+  report: {
+    lines: [] as TLines,
+    x: 0,
+    y: 0,
+  },
 };
 
 export class UI {
-  public static update(): void {
-    if (!Memory.ui) Memory.ui = { ...defaultUiMemory };
-
-    ConsoleUi.updateConsole();
+  public static draw(): void {
+    ConsoleUi.draw();
+    ReportWindow.draw();
   }
 }

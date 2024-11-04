@@ -1,9 +1,11 @@
-import { ErrorMapper } from "./utils/error-mapper";
 import { CreepController } from "./creep.controller";
 import { SpawnController } from "./spawn.controller";
 import { UI } from "./ui";
+import { ErrorMapper } from "./utils/error-mapper";
+import { Helper } from "./utils/helpers";
 
 export const loop = ErrorMapper.wrapLoop(() => {
+  Helper.initializeMemory();
   CreepController.cleanMemory();
 
   SpawnController.update();
@@ -12,5 +14,5 @@ export const loop = ErrorMapper.wrapLoop(() => {
     CreepController.from(creep).run();
   }
 
-  UI.update();
+  UI.draw();
 });
