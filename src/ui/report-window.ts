@@ -13,6 +13,7 @@ export class ReportWindow {
 
       const lines: TLine[] = [];
       this.addRoomInfoLines(room, lines);
+      this.addCpuLines(lines);
       this.addCreepReportLines(room, lines);
 
       // Draw lines to ui
@@ -82,8 +83,11 @@ export class ReportWindow {
 
     for (const roleAndSpec in creepFullCountReport) {
       let text = `${roleAndSpec}: ${creepFullCountReport[roleAndSpec]}`;
+      let tabs = 2;
+
       const spec = roleAndSpec.split("/")[1];
       if (spec) {
+        tabs += 2;
         const maxSpec = MAX_CREEP_SPECS_PER_ROOM[spec];
         if (maxSpec) {
           if (maxSpec.max === Infinity) {
@@ -93,7 +97,45 @@ export class ReportWindow {
           }
         }
       }
-      lines.push(text);
+      lines.push(text.padStart(text.length + tabs, " "));
+    }
+  }
+
+  private static addCpuLines(lines: TLine[]) {
+    const style = {
+      color: "#9C27B0",
+    };
+
+    lines.push("----");
+    lines.push({
+      text: "CPU:",
+      style,
+    });
+
+    lines.push({
+      text: `  Tick used: ${Game.cpu.getUsed().toFixed(2)}/${Game.cpu.tickLimit}`,
+      style,
+    });
+    lines.push({
+      text: `  Shard limit: ${Game.cpu.limit}`,
+      style,
+    });
+    if (Game.cpu.getHeapStatistics) {
+      const heapStatistics = Game.cpu.getHeapStatistics();
+
+      const heapPercent =
+        (heapStatistics.total_heap_size + heapStatistics.externally_allocated_size) / heapStatistics.heap_size_limit;
+
+      const heap = ((heapStatistics.total_heap_size + heapStatistics.externally_allocated_size) / 1024 / 1024).toFixed(
+        1,
+      );
+
+      const heapLimit = (heapStatistics.heap_size_limit / 1024 / 1024).toFixed(0);
+
+      lines.push({
+        text: `  Heap: ${heap}Mb/${heapLimit}Mb (${heapPercent.toFixed(0)}%)`,
+        style,
+      });
     }
   }
 }
