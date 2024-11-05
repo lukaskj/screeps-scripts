@@ -7,9 +7,19 @@ const spawns: TSpawnController = [
     role: "worker",
     spec: "idle",
     max: 10,
-    body: [WORK, CARRY, MOVE, WORK, MOVE, CARRY, WORK, WORK, MOVE],
+    body: [WORK, CARRY, MOVE, WORK, MOVE, CARRY, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK],
+    minBodyParts: 3,
     options: {},
     priority: 0,
+  },
+  {
+    role: "healer",
+    spec: "idle",
+    max: 2,
+    body: [HEAL, WORK, CARRY, MOVE, MOVE, MOVE, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK],
+    minBodyParts: 4,
+    options: {},
+    priority: 1,
   },
 ];
 
@@ -27,9 +37,14 @@ export class SpawnController {
         const spec = spawnData.spec;
 
         if ((allRoleCreeps[role] ?? 0) < spawnData.max) {
-          const creepBodyParts = Utils.calculateMaxBodyPartsForRoom(spawner.room, spawnData.body);
+          const creepBodyParts = Utils.calculateMaxBodyPartsForRoom(
+            spawner.room,
+            spawnData.body,
+            spawnData.minBodyParts,
+          );
+
           if (!creepBodyParts) {
-            console.log("Cannot spawn", spawnData.body, "at", spawner.room.name);
+            // console.log("Cannot spawn", spawnData.body, "at", spawner.room.name);
 
             continue;
           }

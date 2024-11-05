@@ -1,6 +1,6 @@
 import { Utils } from ".";
 
-const STRUCTURES_TO_TRANSFER_ENERGY = [STRUCTURE_EXTENSION, STRUCTURE_SPAWN];
+const STRUCTURES_TO_TRANSFER_ENERGY = [STRUCTURE_EXTENSION, STRUCTURE_SPAWN, STRUCTURE_TOWER];
 
 export class Finder {
   public static findStructuresToTransferEnergy(room: Room) {

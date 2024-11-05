@@ -1,14 +1,13 @@
 import { ICreep } from "./creep/creep.class";
 import { RoleWorker } from "./creep/roles";
+import { RoleHealer } from "./creep/roles/role.healer";
 import { Logger } from "./logger";
 
 const allCreeps = new Map<string, ICreep>();
 
 const ByRole: Record<TCreepRoles, ClassConstructor<ICreep>> = {
   worker: RoleWorker,
-  // [Harvester.role]: Harvester,
-  // [Builder.role]: Builder,
-  // [Upgrader.role]: Upgrader,
+  healer: RoleHealer,
 };
 
 export class CreepController {

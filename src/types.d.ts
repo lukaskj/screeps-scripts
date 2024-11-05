@@ -29,13 +29,16 @@ interface IStateMachineMemory {
   [key: string]: any;
 }
 
-type TCreepRoles = "worker";
-type TCreepSpecs = "idle" | "harvester" | "builder" | "upgrader" | "transfer";
+type TCreepRoles = "worker" | "healer";
+type TWorkerSpecs = "idle" | "harvester" | "builder" | "upgrader" | "transfer";
+type THealerSpecs = "idle" | "heal-creep" | "repair-structure";
+type TCreepSpecs = TWorkerSpecs | THealerSpecs;
 
 interface TCreepMemory {
   role: TCreepRoles;
   spec: TCreepSpecs;
   room: string;
+  harvesting?: boolean;
   [key: string]: any;
 }
 
@@ -54,6 +57,7 @@ type TSpawnItem = {
   spec: TCreepSpecs;
   max: number;
   body: BodyPartConstant[];
+  minBodyParts: number;
   options: object;
   priority: number;
 };

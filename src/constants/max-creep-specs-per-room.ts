@@ -19,4 +19,12 @@ export const MAX_CREEP_SPECS_PER_ROOM: Record<TCreepSpecs, { max: number; priori
     max: Infinity,
     priority: 1,
   },
+  "heal-creep": {
+    max: Infinity,
+    priority: 1,
+  },
+  "repair-structure": {
+    max: Infinity,
+    priority: 1,
+  },
 };

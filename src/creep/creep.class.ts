@@ -10,6 +10,8 @@ export class ICreep {
   }
 
   public stateMachine?: CreepStateMachine;
+  public role: TCreepRoles = "worker";
+  public spec: TCreepSpecs = "idle";
 
   constructor(
     public name: string,

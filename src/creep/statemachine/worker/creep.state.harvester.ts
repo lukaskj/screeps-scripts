@@ -15,11 +15,10 @@ export class CreepStateHarvester extends CreepState {
     const icreep = this.ref;
     const creep = icreep.creep;
     const room = creep.room;
+    const memory = this.getMemory();
 
     if (creep.store.getFreeCapacity() > 0) {
       const sources = [...Finder.availableEnergySites(room), ...Finder.droppedResources(room)];
-
-      const memory = this.getMemory();
 
       if (!sources.length) {
         return CreepStateIdle;
@@ -64,7 +63,7 @@ export class CreepStateHarvester extends CreepState {
           }
         }
       } else if (result != OK) {
-        Logger.error("Error harvesting", result);
+        Logger.error(`Error harvesting. Name ${creep.name}. State: ${this.constructor.name}. Result: ${result}`);
         return CreepStateThinking;
       }
     } else {

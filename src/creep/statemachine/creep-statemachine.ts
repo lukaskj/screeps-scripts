@@ -3,8 +3,8 @@ import { ICreep } from "../creep.class";
 import { CreepState } from "./base-creep.state";
 
 export class CreepStateMachine extends StateMachine<ICreep, CreepState> {
-  constructor(states: ClassConstructor<CreepState>[], ref: ICreep) {
-    super(states, ref);
+  constructor(states: ClassConstructor<CreepState>[], ref: ICreep, initialState?: ClassConstructor<CreepState>) {
+    super(states, ref, initialState);
   }
 
   public override update(): void {
