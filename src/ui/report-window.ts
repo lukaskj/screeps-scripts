@@ -129,7 +129,7 @@ export class ReportWindow {
     });
 
     lines.push({
-      text: `  Tick used: ${Game.cpu.getUsed().toFixed(2)}/${Game.cpu.tickLimit}`,
+      text: `  Tick used: ${Game.cpu.getUsed().toFixed(2)}/${Game.cpu.limit}`,
       style,
     });
     // lines.push({

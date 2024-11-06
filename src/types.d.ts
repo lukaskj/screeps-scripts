@@ -32,7 +32,8 @@ interface IStateMachineMemory {
 type TCreepRoles = "worker" | "healer" | "miner";
 type TWorkerSpecs = "idle" | "harvester" | "builder" | "upgrader" | "transfer";
 type THealerSpecs = "idle" | "heal-creep" | "repair-structure";
-type TCreepSpecs = TWorkerSpecs | THealerSpecs;
+type TMinerSpecs = "mining";
+type TCreepSpecs = TWorkerSpecs | THealerSpecs | TMinerSpecs;
 
 interface TCreepMemory {
   role: TCreepRoles;
@@ -40,16 +41,18 @@ interface TCreepMemory {
   room: string;
   harvesting?: boolean;
   minerContainerId?: string;
+  minerSourceId?: string;
   [key: string]: any;
 }
 
 type TSpawnMemory = SpawnMemory & { ticksWithoutSpawn?: number };
+type TRoomMemory = RoomMemory & { minerContainerIds?: string[] };
 
 interface Memory {
   creeps: { [name: string]: TCreepMemory };
   powerCreeps: { [name: string]: PowerCreepMemory };
   flags: { [name: string]: FlagMemory };
-  rooms: { [name: string]: RoomMemory };
+  rooms: { [name: string]: TRoomMemory };
   spawns: { [name: string]: TSpawnMemory };
   ui: TUiMemory;
   states: { [name: string]: IStateMachineMemory };

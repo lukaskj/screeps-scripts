@@ -15,8 +15,10 @@ export class SpawnController {
       const memory = Memory.spawns[spawnName];
       memory.ticksWithoutSpawn = memory.ticksWithoutSpawn ?? 0;
 
-      const prioritySpawns = _.sortBy(spawnsData, "priority");
       const allRoleCreepsSpawned = Finder.getCreepRolesReport(spawner.room);
+
+      const prioritySpawns = _.sortBy(spawnsData, "priority");
+      // console.log("priority", prioritySpawns[0].role);
 
       try {
         for (const spawnData of prioritySpawns) {

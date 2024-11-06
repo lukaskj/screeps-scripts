@@ -93,7 +93,7 @@ export class Finder {
     });
   }
 
-  public static availableEnergySites(room: Room) {
+  public static availableEnergySources(room: Room) {
     return room.find(FIND_SOURCES_ACTIVE, {
       filter: (source) => source.energy >= 1,
     });
@@ -102,6 +102,18 @@ export class Finder {
   public static droppedResources(room: Room) {
     return room.find(FIND_TOMBSTONES && FIND_DROPPED_RESOURCES, {
       filter: (tombstone) => (tombstone instanceof Tombstone ? tombstone.store[RESOURCE_ENERGY] >= 1 : true),
+    });
+  }
+
+  public static sourcesToHarvest(room: Room) {
+    return [...this.availableEnergySources(room), ...this.droppedResources(room)];
+  }
+
+  public static storedEnergySources(room: Room): (StructureStorage | StructureContainer)[] {
+    return room.find(FIND_STRUCTURES, {
+      filter: (structure) =>
+        [STRUCTURE_STORAGE, STRUCTURE_CONTAINER].includes(<any>structure.structureType) &&
+        (<any>structure).store[RESOURCE_ENERGY] > 200,
     });
   }
 
@@ -127,13 +139,17 @@ export class Finder {
     });
   }
 
-  public static containersNearEnergySources(room: Room) {
+  public static containersNearEnergySources(room: Room): StructureContainer[] {
     return room.find(FIND_STRUCTURES, {
       filter: (structure) =>
         structure.structureType === STRUCTURE_CONTAINER &&
         structure.room.name === room.name &&
         structure.pos.findInRange(FIND_SOURCES_ACTIVE, 1).length > 0,
     });
+  }
+
+  public static minerContainers(room: Room) {
+    return this.containersNearEnergySources(room).filter((container) => container.store[RESOURCE_ENERGY] > 100);
   }
 
   public static availableContainersToMine(room: Room) {
@@ -143,9 +159,11 @@ export class Finder {
       }).filter((containerId) => containerId !== undefined),
     );
 
-    return this.containersNearEnergySources(room)
-      .map((container) => container.id)
-      .filter((containerId) => !creeps.has(containerId));
+    return (
+      this.containersNearEnergySources(room)
+        // .map((container) => container.id)
+        .filter((container) => !creeps.has(container.id))
+    );
   }
 
   public static getAvailableSpawner(_room?: Room) {

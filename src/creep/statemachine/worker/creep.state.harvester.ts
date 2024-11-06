@@ -18,13 +18,24 @@ export class CreepStateHarvester extends CreepState {
     const memory = this.getMemory();
 
     if (creep.store.getFreeCapacity() > 0) {
-      const sources = [...Finder.availableEnergySites(room), ...Finder.droppedResources(room)];
+      const minerContainers = Finder.minerContainers(room);
+      const droppedResources = Finder.droppedResources(room);
+      const availableEnergySources = Finder.availableEnergySources(room);
+
+      const sources: (Source | Resource | StructureContainer)[] = droppedResources.length
+        ? droppedResources
+        : minerContainers.length
+          ? minerContainers
+          : availableEnergySources;
 
       if (!sources.length) {
         return CreepStateIdle;
       }
 
-      let target = Finder.findClosestTo(creep, sources);
+      let target = minerContainers.length
+        ? Finder.findClosestTo(creep, minerContainers)
+        : Finder.findClosestTo(creep, sources);
+
       if (memory.sourceToHarvestId) {
         target = Game.getObjectById<Source>(memory.sourceToHarvestId) ?? target;
       }

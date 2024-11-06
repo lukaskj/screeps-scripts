@@ -1,4 +1,4 @@
-export const MAX_CREEP_SPECS_PER_ROOM: Record<TCreepSpecs, { max: number; priority: number }> = {
+export const MAX_CREEP_SPECS_PER_ROOM: Partial<Record<TCreepSpecs, { max: number; priority: number }>> = {
   upgrader: {
     max: 1,
     priority: 1,

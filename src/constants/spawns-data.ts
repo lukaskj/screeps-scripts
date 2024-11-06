@@ -5,16 +5,16 @@ export const spawnsData: TSpawnController = [
     role: "worker",
     spec: "idle",
     min: 6,
-    max: 6,
+    max: 8,
     // prettier-ignore
     body: [WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, MOVE, WORK, WORK, WORK, WORK, MOVE, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, CARRY],
     minBodyParts: 3,
     options: {},
     priority: 0,
-    canSpawn: (room: Room) => {
-      const sourcesWithoutContainer = Finder.energySourcesWithoutContainer(room);
+    canSpawn: (_room: Room) => {
+      // const sourcesWithoutContainer = Finder.energySourcesWithoutContainer(room);
 
-      return !!sourcesWithoutContainer.length;
+      return true;
     },
   },
   {
@@ -35,14 +35,14 @@ export const spawnsData: TSpawnController = [
     min: 1,
     max: 2,
     // prettier-ignore
-    body: [MOVE, WORK, WORK, WORK, WORK],
-    minBodyParts: 3,
+    body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, TOUGH],
+    minBodyParts: 2,
     options: {},
     priority: 0,
     canSpawn: (room: Room) => {
       const availableContainersToMine = Finder.availableContainersToMine(room);
 
-      return availableContainersToMine.length > 0 && false;
+      return availableContainersToMine.length > 0;
     },
   },
 ];

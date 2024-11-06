@@ -66,6 +66,6 @@ export class CreepStateThinking extends CreepState {
   }
 
   private isSpecFull(spec: TCreepSpecs, report: ReturnType<typeof Finder.getCreepSpecializationReport>): boolean {
-    return (report[spec] ?? 0) >= MAX_CREEP_SPECS_PER_ROOM[spec].max;
+    return !!MAX_CREEP_SPECS_PER_ROOM[spec] && (report[spec] ?? 0) >= MAX_CREEP_SPECS_PER_ROOM[spec].max;
   }
 }

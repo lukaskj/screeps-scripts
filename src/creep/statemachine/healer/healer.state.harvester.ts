@@ -19,16 +19,21 @@ export class HealerStateHarvester extends CreepState {
     if (creep.store[RESOURCE_ENERGY] === 0 || memory.harvesting) {
       memory.harvesting = true;
 
-      const sources = [...Finder.availableEnergySites(room), ...Finder.droppedResources(room)];
+      const storedEnergySources = Finder.storedEnergySources(room);
+      const droppedResources = Finder.droppedResources(room);
+      const availableEnergySources = Finder.availableEnergySources(room);
 
-      if (!sources.length) {
+      const sources = droppedResources.length
+        ? droppedResources
+        : storedEnergySources.length
+          ? storedEnergySources
+          : availableEnergySources;
+
+      if (!storedEnergySources.length && !sources.length) {
         return HealerStateThinking;
       }
 
-      const target = Finder.findClosestTo(creep, sources);
-      // if (memory.sourceToHarvestId) {
-      //   target = Game.getObjectById<Source>(memory.sourceToHarvestId) ?? target;
-      // }
+      const target = Finder.findClosestTo<RoomObject>(creep, sources);
 
       let result: number = OK;
 
@@ -37,7 +42,7 @@ export class HealerStateHarvester extends CreepState {
       } else if (target instanceof Resource) {
         result = creep.pickup(target);
       } else {
-        result = creep.withdraw(target, RESOURCE_ENERGY);
+        result = creep.withdraw(<any>target, RESOURCE_ENERGY);
       }
 
       if (result === ERR_NOT_IN_RANGE) {
