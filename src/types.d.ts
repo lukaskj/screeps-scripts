@@ -39,6 +39,7 @@ interface TCreepMemory {
   spec: TCreepSpecs;
   room: string;
   harvesting?: boolean;
+  minerContainerId?: string;
   [key: string]: any;
 }
 

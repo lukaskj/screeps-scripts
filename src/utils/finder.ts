@@ -4,7 +4,7 @@ const STRUCTURES_TO_TRANSFER_ENERGY = [
   STRUCTURE_EXTENSION,
   STRUCTURE_SPAWN,
   STRUCTURE_TOWER,
-  STRUCTURE_CONTAINER,
+  // STRUCTURE_CONTAINER,
   STRUCTURE_STORAGE,
 ];
 
@@ -107,6 +107,45 @@ export class Finder {
 
   public static getMyConstructionSites(room: Room) {
     return room.find(FIND_MY_CONSTRUCTION_SITES);
+  }
+
+  public static energySourcesWithContainer(room: Room) {
+    return room.find(FIND_SOURCES_ACTIVE, {
+      filter: (source: Source) =>
+        source.pos.findInRange(FIND_STRUCTURES, 1, {
+          filter: (strucure) => strucure.structureType === STRUCTURE_CONTAINER,
+        }).length > 0,
+    });
+  }
+
+  public static energySourcesWithoutContainer(room: Room) {
+    return room.find(FIND_SOURCES_ACTIVE, {
+      filter: (source: Source) =>
+        source.pos.findInRange(FIND_STRUCTURES, 1, {
+          filter: (strucure) => strucure.structureType === STRUCTURE_CONTAINER,
+        }).length === 0,
+    });
+  }
+
+  public static containersNearEnergySources(room: Room) {
+    return room.find(FIND_STRUCTURES, {
+      filter: (structure) =>
+        structure.structureType === STRUCTURE_CONTAINER &&
+        structure.room.name === room.name &&
+        structure.pos.findInRange(FIND_SOURCES_ACTIVE, 1).length > 0,
+    });
+  }
+
+  public static availableContainersToMine(room: Room) {
+    const creeps = new Set(
+      _.map(Memory.creeps, (memory, _name) => {
+        return memory.minerContainerId ? memory.minerContainerId : undefined;
+      }).filter((containerId) => containerId !== undefined),
+    );
+
+    return this.containersNearEnergySources(room)
+      .map((container) => container.id)
+      .filter((containerId) => !creeps.has(containerId));
   }
 
   public static getAvailableSpawner(_room?: Room) {
