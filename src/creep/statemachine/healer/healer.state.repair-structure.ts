@@ -21,9 +21,7 @@ export class HealerStateRepairStructure extends CreepState {
     });
 
     const roadsToRepair = room.find(FIND_STRUCTURES, {
-      filter: (structure) =>
-        structure.hits < structure.hitsMax &&
-        [STRUCTURE_ROAD, STRUCTURE_CONTAINER].includes(structure.structureType as any),
+      filter: (structure) => structure.hits < structure.hitsMax && structure.room.name === memory.room,
     });
 
     if (!structuresToRepair.length && !roadsToRepair.length) {

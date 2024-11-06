@@ -1,29 +1,9 @@
+import { spawnsData } from "./constants/spawns-data";
 import { Logger } from "./logger";
 import { Utils } from "./utils";
 import { Finder } from "./utils/finder";
 
-const spawns: TSpawnController = [
-  {
-    role: "worker",
-    spec: "idle",
-    max: 12,
-    body: [WORK, CARRY, MOVE, WORK, MOVE, CARRY, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK],
-    minBodyParts: 3,
-    options: {},
-    priority: 0,
-  },
-  {
-    role: "healer",
-    spec: "idle",
-    max: 2,
-    body: [HEAL, WORK, CARRY, MOVE, MOVE, MOVE, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK],
-    minBodyParts: 4,
-    options: {},
-    priority: 1,
-  },
-];
-
-const prioritySpawns = _.sortBy(spawns, "priority");
+const prioritySpawns = _.sortBy(spawnsData, "priority");
 
 export class SpawnController {
   public static update() {
