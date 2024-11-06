@@ -137,9 +137,8 @@ export class ReportWindow {
     //   style,
     // });
 
-    if (Game.cpu.getHeapStatistics) {
-      const heapStatistics = Game.cpu.getHeapStatistics();
-
+    const heapStatistics = Game.cpu.getHeapStatistics && Game.cpu.getHeapStatistics();
+    if (heapStatistics) {
       const heapPercent =
         (heapStatistics.total_heap_size + heapStatistics.externally_allocated_size) / heapStatistics.heap_size_limit;
 
