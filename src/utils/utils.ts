@@ -51,8 +51,9 @@ export class Utils {
     room: Room,
     parts: BodyPartConstant[],
     minParts = 3,
+    energyAvailable?: number
   ): BodyPartConstant[] | false {
-    const maxEnergy = room.energyCapacityAvailable;
+    const maxEnergy = energyAvailable ?? room.energyCapacityAvailable;
     let costTotal = 0;
 
     for (let i = 0; i < parts.length; i++) {

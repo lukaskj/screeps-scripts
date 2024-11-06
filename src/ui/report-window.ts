@@ -1,5 +1,6 @@
 import { MAX_CREEP_SPECS_PER_ROOM } from "../constants/max-creep-specs-per-room";
-import { Finder } from "../utils";
+import { MAX_TICKS_WITHOUT_SPAWN } from "../constants/spawns-data";
+import { Finder, Utils } from "../utils";
 
 export class ReportWindow {
   public static draw(): void {
@@ -54,7 +55,7 @@ export class ReportWindow {
       },
     });
 
-    const controllerColor = "#90A4AE";
+    const controllerColor = "#FAFAFA";
     if (room.controller) {
       lines.push({
         text: `Controller: Lvl ${room.controller.level} (${room.controller.progress}/${room.controller.progressTotal})`,
@@ -75,6 +76,20 @@ export class ReportWindow {
   private static addCreepReportLines(room: Room, lines: TLine[]) {
     const creepFullCountReport = Finder.getCreepFullRolesReport(room);
     lines.push("----");
+
+    const ticksWithoutSpawn = _.reduce(
+      Memory.spawns ?? {},
+      (maxTicks, memory) => Math.max((<any>memory).ticksWithoutSpawn ?? 0, maxTicks),
+      0,
+    );
+
+    lines.push({
+      text: `Ticks w/o spawn: ${ticksWithoutSpawn}/${MAX_TICKS_WITHOUT_SPAWN}`,
+      style: {
+        color: "#9E9E9E",
+      },
+    });
+
     lines.push({
       text: "Creep roles:",
       style: {
@@ -121,6 +136,7 @@ export class ReportWindow {
       text: `  Shard limit: ${Game.cpu.limit}`,
       style,
     });
+
     if (Game.cpu.getHeapStatistics) {
       const heapStatistics = Game.cpu.getHeapStatistics();
 
@@ -149,29 +165,48 @@ export class ReportWindow {
       return;
     }
 
+    const color = "#FFEB3B";
+
     lines.push({
-      text: "Spawning:",
+      text: "Spawning (total/cost/parts):",
       style: {
-        color: "#FFEB3B",
+        color,
       },
     });
 
-    const spawningCreeps = spawners.reduce(
-      (result, spawner) => {
-        const creepSpawner = spawner.spawning as Spawning;
-        const memory = Memory.creeps[creepSpawner.name];
-        result[memory.role] = (result[memory.role] ?? 0) + 1;
+    type TSpawingCreepReport = {
+      total: number;
+      cost: number;
+      parts: BodyPartConstant[];
+    };
 
-        return result;
-      },
-      {} as Record<TCreepRoles, number>,
-    );
+    const spawningCreeps: Partial<Record<TCreepRoles, TSpawingCreepReport>> = {};
 
-    for (const [role, count] of Object.entries(spawningCreeps)) {
+    const defaultCreepSpawningReport: TSpawingCreepReport = {
+      total: 0,
+      cost: 0,
+      parts: [],
+    };
+
+    for (const spawner of spawners) {
+      const creepSpawner = <Spawning>spawner.spawning;
+      const creep = Game.creeps[creepSpawner.name];
+
+      const memory = Memory.creeps[creepSpawner.name];
+
+      const bodyParts = creep.body.map((body) => body.type);
+      const totalCost = Utils.calculateBodyPartsCost(bodyParts);
+      spawningCreeps[memory.role] = spawningCreeps[memory.role] ?? { ...defaultCreepSpawningReport };
+      (<TSpawingCreepReport>spawningCreeps[memory.role]).total += 1;
+      (<TSpawingCreepReport>spawningCreeps[memory.role]).cost = totalCost;
+      (<TSpawingCreepReport>spawningCreeps[memory.role]).parts = bodyParts;
+    }
+
+    for (const [role, report] of Object.entries(spawningCreeps)) {
       lines.push({
-        text: `  ${role}: ${count}`,
+        text: `  ${role}: ${report.total}/${report.cost}/${report.parts.length}`,
         style: {
-          color: "#FFEB3B",
+          color,
         },
       });
     }

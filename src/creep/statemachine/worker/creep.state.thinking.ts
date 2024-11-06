@@ -1,7 +1,8 @@
+import { MAX_CONTROLLER_TICKS_TO_DOWNGRADE } from "../../../constants/constants";
 import { MAX_CREEP_SPECS_PER_ROOM } from "../../../constants/max-creep-specs-per-room";
-import { ICreep } from "../../creep.class";
-import { Finder } from "../../../utils/finder";
 import { BaseState } from "../../../statemachine/statemachine";
+import { Finder } from "../../../utils/finder";
+import { ICreep } from "../../creep.class";
 import { CreepState } from "../base-creep.state";
 import { CreepStateBuilder } from "./creep.state.builder";
 import { CreepStateHarvester } from "./creep.state.harvester";
@@ -25,7 +26,7 @@ export class CreepStateThinking extends CreepState {
     // Upgrader checks
     const roomCreepSpecializations = Finder.getCreepSpecializationReport(room);
     if (this.creep.room.controller) {
-      if (this.creep.room.controller.ticksToDowngrade < 500) {
+      if (this.creep.room.controller.ticksToDowngrade < MAX_CONTROLLER_TICKS_TO_DOWNGRADE) {
         return CreepStateUpgrader;
       }
 

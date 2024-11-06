@@ -2,10 +2,24 @@ import { CreepController } from "./creep.controller";
 import { SpawnController } from "./spawn.controller";
 import { Tower } from "./tower";
 import { UI } from "./ui";
-import { ErrorMapper } from "./utils/error-mapper";
 import { Helper } from "./utils/helpers";
 
-export const loop = ErrorMapper.wrapLoop(() => {
+function wrapLoop(loop: () => void): () => void {
+  return () => {
+    try {
+      loop();
+    } catch (e) {
+      if (e instanceof Error) {
+        console.log(`<span style='color:red'>${_.escape(e.stack)}</span>`);
+      } else {
+        // can't handle it
+        throw e;
+      }
+    }
+  };
+}
+
+export const loop = wrapLoop(() => {
   Helper.initializeMemory();
   CreepController.cleanMemory();
 
