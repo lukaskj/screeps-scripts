@@ -1,19 +1,13 @@
+import { ROLE_MAP } from "./constants/role-map";
 import { ICreep } from "./creep/creep.class";
-import { RoleWorker } from "./creep/roles";
-import { RoleHealer } from "./creep/roles/role.healer";
 import { Logger } from "./logger";
 
 const allCreeps = new Map<string, ICreep>();
 
-const ByRole: Record<TCreepRoles, ClassConstructor<ICreep>> = {
-  worker: RoleWorker,
-  healer: RoleHealer,
-};
-
 export class CreepController {
   public static from(creep: Creep): ICreep {
     if (!allCreeps.has(creep.name)) {
-      let clazz: ClassConstructor<ICreep> = ByRole[creep.memory.role];
+      let clazz: ClassConstructor<ICreep> = ROLE_MAP[creep.memory.role];
       if (!clazz) {
         Logger.warn(`No class for role ${creep.memory.role}`);
 
