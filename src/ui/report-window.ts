@@ -15,6 +15,7 @@ export class ReportWindow {
       this.addRoomInfoLines(room, lines);
       this.addCpuLines(lines);
       this.addCreepReportLines(room, lines);
+      this.addSpawningInfo(room, lines);
 
       // Draw lines to ui
       for (let i = 0; i < lines.length; i++) {
@@ -135,6 +136,43 @@ export class ReportWindow {
       lines.push({
         text: `  Heap: ${heap}Mb/${heapLimit}Mb (${heapPercent.toFixed(0)}%)`,
         style,
+      });
+    }
+  }
+
+  private static addSpawningInfo(room: Room, lines: TLine[]) {
+    const spawners = room.find(FIND_MY_SPAWNS, {
+      filter: (spawn) => spawn.spawning,
+    });
+
+    if (!spawners.length) {
+      return;
+    }
+
+    lines.push({
+      text: "Spawning:",
+      style: {
+        color: "#FFEB3B",
+      },
+    });
+
+    const spawningCreeps = spawners.reduce(
+      (result, spawner) => {
+        const creepSpawner = spawner.spawning as Spawning;
+        const memory = Memory.creeps[creepSpawner.name];
+        result[memory.role] = (result[memory.role] ?? 0) + 1;
+
+        return result;
+      },
+      {} as Record<TCreepRoles, number>,
+    );
+
+    for (const [role, count] of Object.entries(spawningCreeps)) {
+      lines.push({
+        text: `  ${role}: ${count}`,
+        style: {
+          color: "#FFEB3B",
+        },
       });
     }
   }
