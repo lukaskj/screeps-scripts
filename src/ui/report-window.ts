@@ -49,7 +49,7 @@ export class ReportWindow {
     });
 
     lines.push({
-      text: `Energy: ${room.energyAvailable} / ${room.energyCapacityAvailable}`,
+      text: `Energy: ${room.energyAvailable}/${room.energyCapacityAvailable}`,
       style: {
         color: "#FFEB3B",
       },
@@ -132,10 +132,10 @@ export class ReportWindow {
       text: `  Tick used: ${Game.cpu.getUsed().toFixed(2)}/${Game.cpu.tickLimit}`,
       style,
     });
-    lines.push({
-      text: `  Shard limit: ${Game.cpu.limit}`,
-      style,
-    });
+    // lines.push({
+    //   text: `  Shard limit: ${Game.cpu.limit}`,
+    //   style,
+    // });
 
     if (Game.cpu.getHeapStatistics) {
       const heapStatistics = Game.cpu.getHeapStatistics();
