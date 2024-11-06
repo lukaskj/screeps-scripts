@@ -16,10 +16,7 @@ export class ICreep {
   constructor(
     public name: string,
     public stroke = "#ffffff",
-    stateMachine?: CreepStateMachine,
-  ) {
-    this.stateMachine = stateMachine;
-  }
+  ) {}
 
   public canRun() {
     if (this.creep.spawning) {

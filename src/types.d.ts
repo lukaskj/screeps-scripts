@@ -29,7 +29,7 @@ interface IStateMachineMemory {
   [key: string]: any;
 }
 
-type TCreepRoles = "worker" | "healer";
+type TCreepRoles = "worker" | "healer" | "miner";
 type TWorkerSpecs = "idle" | "harvester" | "builder" | "upgrader" | "transfer";
 type THealerSpecs = "idle" | "heal-creep" | "repair-structure";
 type TCreepSpecs = TWorkerSpecs | THealerSpecs;
@@ -42,12 +42,14 @@ interface TCreepMemory {
   [key: string]: any;
 }
 
+type TSpawnMemory = SpawnMemory & { ticksWithoutSpawn?: number };
+
 interface Memory {
   creeps: { [name: string]: TCreepMemory };
   powerCreeps: { [name: string]: PowerCreepMemory };
   flags: { [name: string]: FlagMemory };
   rooms: { [name: string]: RoomMemory };
-  spawns: { [name: string]: SpawnMemory };
+  spawns: { [name: string]: TSpawnMemory };
   ui: TUiMemory;
   states: { [name: string]: IStateMachineMemory };
 }
@@ -55,16 +57,18 @@ interface Memory {
 type TSpawnItem = {
   role: TCreepRoles;
   spec: TCreepSpecs;
+  min: number;
   max: number;
   body: BodyPartConstant[];
   minBodyParts: number;
   options: object;
   priority: number;
+  canSpawn: boolean | ((room: Room) => boolean);
 };
+type TSpawnController = TSpawnItem[];
 
 type TStateNamedReference = { name: string; [key: string]: any };
 type TStateIdReference = { id: string; [key: string]: any };
 type TStateReference = TStateNamedReference | TStateIdReference;
 
-type TSpawnController = TSpawnItem[];
 type ClassConstructor<T> = { new (...args: any[]): T };
