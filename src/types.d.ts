@@ -45,7 +45,10 @@ interface TCreepMemory {
   [key: string]: any;
 }
 
-type TSpawnMemory = SpawnMemory & { ticksWithoutSpawn?: number };
+type TSpawnMemory = SpawnMemory & {
+  ticksWithoutSpawn?: number;
+  allSourcesWithContainer?: boolean;
+};
 type TRoomMemory = RoomMemory & { minerContainerIds?: string[] };
 
 interface Memory {

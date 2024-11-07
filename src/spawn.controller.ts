@@ -6,6 +6,11 @@ import { Finder } from "./utils/finder";
 export class SpawnController {
   public static update() {
     let spawned = false;
+
+    if (Object.values(Game.spawns).length) {
+      this.createMinerConstructionSite(Object.values(Game.spawns)[0]);
+    }
+
     for (const spawnName in Game.spawns) {
       const spawner = Game.spawns[spawnName];
 
@@ -83,6 +88,79 @@ export class SpawnController {
           memory.ticksWithoutSpawn++;
         }
       }
+    }
+  }
+
+  private static createMinerConstructionSite(spawner: StructureSpawn) {
+    const name = spawner.name;
+    const room = spawner.room;
+    if (!Memory.spawns) Memory.spawns = {};
+    Memory.spawns[name] = Memory.spawns[name] ?? {};
+
+    const memory = Memory.spawns[name];
+
+    const MAX_SOURCE_RANGE = 15;
+
+    if (memory.allSourcesWithContainer) {
+      return;
+    }
+
+    const energySourcesInRange = Finder.availableEnergySources(room).filter((source) =>
+      source.pos.inRangeTo(spawner, MAX_SOURCE_RANGE),
+    );
+    const energySourcesWithoutContainer = energySourcesInRange.filter(
+      (source) =>
+        source.pos.findInRange(FIND_STRUCTURES, 1, {
+          filter: (strucure) => strucure.structureType === STRUCTURE_CONTAINER,
+        }).length === 0,
+    );
+    const energySourcesWithContainerConstructionSite = energySourcesInRange.filter(
+      (source) =>
+        source.pos.findInRange(FIND_MY_CONSTRUCTION_SITES, 1, {
+          filter: (site) => site.structureType === STRUCTURE_CONTAINER,
+        }).length > 0,
+    );
+
+    const sourcesToBuildContainer = energySourcesWithoutContainer.filter(
+      (source) => !energySourcesWithContainerConstructionSite.some((sourceWithCon) => sourceWithCon.id === source.id),
+    );
+
+    if (energySourcesInRange.length && !sourcesToBuildContainer.length) {
+      memory.allSourcesWithContainer = true;
+
+      return;
+    }
+
+    let allContructionSitesCreated = true;
+    for (const sourceToBuild of sourcesToBuildContainer) {
+      let i = 1;
+      const path = sourceToBuild.pos.findPathTo(spawner);
+      if (!path.length) {
+        Logger.error(`Cannot find path from source '${sourceToBuild.id}' to spawner '${spawner.name}'.`);
+
+        continue;
+      }
+
+      const pos = path[0];
+      room.visual.text(`${i++}`, pos.x, pos.y);
+      const createResult = room.createConstructionSite(pos.x, pos.y, STRUCTURE_CONTAINER);
+
+      if (createResult === OK) {
+        continue;
+      } else {
+        allContructionSitesCreated = false;
+        Logger.error(
+          `Error creating construction site at (${pos.x},${pos.y}) for source '${sourceToBuild.id}: ${createResult}'`,
+        );
+
+        continue;
+      }
+    }
+
+    if (allContructionSitesCreated) {
+      memory.allSourcesWithContainer = true;
+
+      return;
     }
   }
 }
