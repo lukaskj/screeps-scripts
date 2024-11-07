@@ -19,9 +19,13 @@ export class CreepStateTransfer extends CreepState {
     }
 
     const structuresToTransfer = Finder.findStructuresToTransferEnergy(creep.room);
+    const towerNeedingEnergy = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+      filter: (structure) =>
+        structure instanceof StructureTower && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0,
+    });
 
-    if (structuresToTransfer.length > 0) {
-      const structureToTransfer = Finder.findClosestTo(creep, structuresToTransfer);
+    if (structuresToTransfer.length > 0 || !!towerNeedingEnergy) {
+      const structureToTransfer = towerNeedingEnergy ?? Finder.findClosestTo(creep, structuresToTransfer);
       const transferResult = creep.transfer(structureToTransfer, RESOURCE_ENERGY);
 
       switch (transferResult) {

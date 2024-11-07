@@ -4,10 +4,10 @@ export const spawnsData: TSpawnController = [
   {
     role: "worker",
     spec: "idle",
-    min: 6,
-    max: 8,
+    min: 4,
+    max: 4,
     // prettier-ignore
-    body: [WORK, CARRY, MOVE, WORK, WORK, CARRY, MOVE, MOVE, WORK, WORK, WORK, WORK, MOVE, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, CARRY],
+    body: [WORK, CARRY, MOVE, WORK, WORK, CARRY, CARRY, MOVE, CARRY, MOVE, WORK, WORK, WORK, WORK, MOVE, WORK, WORK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, CARRY],
     minBodyParts: 3,
     options: {},
     priority: 0,
@@ -47,4 +47,4 @@ export const spawnsData: TSpawnController = [
   },
 ];
 
-export const MAX_TICKS_WITHOUT_SPAWN = 2000;
+export const MAX_TICKS_WITHOUT_SPAWN = 400;
